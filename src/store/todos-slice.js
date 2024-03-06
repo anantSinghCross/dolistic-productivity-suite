@@ -7,6 +7,14 @@ const todosSlice = createSlice({
         addTodo: (state, action) => {
             state.push(action.payload);
         },
+        toggleCompleted: (state, action) => {
+            return state.map(todo => {
+                if(todo.id === action.payload){
+                    return {...todo, completed: !todo.completed}
+                }
+                return todo;
+            });
+        },
         deleteTodo: (state, action) => {
             return state.filter(todo => todo.id !== action.payload);
         }
@@ -25,5 +33,5 @@ const fetchTodos = createAsyncThunk('todos/fetchTodos', async () => {
 
 const { addTodo, deleteTodo } = todosSlice.actions;
 
-export { addTodo, deleteTodo, fetchTodos };
+export { addTodo, toggleCompleted, deleteTodo, fetchTodos };
 export default todosSlice;
