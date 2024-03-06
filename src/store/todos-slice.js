@@ -31,7 +31,7 @@ const fetchTodos = createAsyncThunk('todos/fetchTodos', async () => {
     return await todosData.json();
 })
 
-const { addTodo, deleteTodo } = todosSlice.actions;
+const { addTodo, deleteTodo, toggleCompleted } = todosSlice.actions;
 
 export { addTodo, toggleCompleted, deleteTodo, fetchTodos };
 export default todosSlice;

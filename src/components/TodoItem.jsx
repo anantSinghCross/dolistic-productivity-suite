@@ -1,8 +1,10 @@
 import React from 'react'
 
-function TodoItem() {
+function TodoItem({ todo, completed }) {
   return (
-    <div>TodoItem</div>
+    <div>
+        <input type="checkbox" name="" id="" />
+    </div>
   )
 }
 
