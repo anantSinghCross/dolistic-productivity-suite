@@ -1,5 +1,104 @@
 * {
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+}
+
+nav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px;
+}
+
+menu {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+menu li {
+  list-style: none;
+  padding: 10px;
+}
+
+.todo-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.todo-item-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+input[type=checkbox] {
+  margin: 5px 10px;
+  min-width: 17px;
+  min-height: 17px;
+}
+
+input[type=text] {
+  padding: 10px;
+  border: 0;
+  outline-color: tomato;
+  width: 100%;
+}
+
+/* --- Utilities --- */
+
+.flex-row{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.flex-col{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.card {
+  padding: 5px;
+  margin: 10px;
+  border: solid 1px grey;
+  border-radius: 5px;
+}
+
+.btn {
+  padding: 7px 15px;
+  border: solid 1px grey;
+  background-color: white;
+  border-radius: 3px;
+  margin: 5px;
+}
+
+.btn-del {
+  background-color: darkred;
+  color: white;
+  border: 0px;
+  transition: .2s;
+}
+.btn-del:hover {
+  background-color: red;
+  color: white;
+  border: 0px;
+}
+
+.btn-add {
+  background-color: darkgreen;
+  color: white;
+  border: 0px;
+  transition: .2s;
+}
+.btn-add:hover {
+  background-color: green;
+  color: white;
+  border: 0px;
 }

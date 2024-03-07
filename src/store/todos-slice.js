@@ -4,19 +4,25 @@ const todosSlice = createSlice({
     name: 'todos',
     initialState : [],
     reducers: {
-        addTodo: (state, action) => {
-            state.push(action.payload);
+        addTodo: {
+            reducer: (state, action) => {
+                state.push(action.payload);
+            },
+            prepare: (todo) => {
+                const todoItem = {todo, id: Math.trunc(Math.random()*100000), completed: false };
+                return { payload: todoItem };
+            }
         },
         toggleCompleted: (state, action) => {
             return state.map(todo => {
-                if(todo.id === action.payload){
+                if(todo.id == action.payload){
                     return {...todo, completed: !todo.completed}
                 }
                 return todo;
             });
         },
         deleteTodo: (state, action) => {
-            return state.filter(todo => todo.id !== action.payload);
+            return state.filter(todo => todo.id != action.payload);
         }
     },
     extraReducers: (builder) => {
