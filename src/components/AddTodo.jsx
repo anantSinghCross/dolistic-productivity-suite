@@ -13,7 +13,7 @@ function AddTodo() {
   }
 
   return (
-    <div className='card flex-row'>
+    <div className='card-solid flex-row '>
       <input type="text" placeholder='✏️ New Todo!' value={text} onChange={(e) => setText(e.target.value)} />
       <button className="btn btn-add" onClick={handleAddTodo}>Add</button>
     </div>
