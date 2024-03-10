@@ -47,7 +47,7 @@ const todosSlice = createSlice({
 });
 
 const fetchTodos = createAsyncThunk('todos/fetchTodos', async () => {
-    const todosData = await fetch('https://dummyjson.com/todos');
+    const todosData = await fetch('https://dummyjson.com/todos?limit=5');
     return await todosData.json();
 })
 
