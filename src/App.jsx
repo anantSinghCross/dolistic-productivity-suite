@@ -7,8 +7,9 @@ import AddTodo from './components/AddTodo';
 
 function App() {
   const dispatch = useDispatch();
-  const todos = useSelector(state => state.todos);
-
+  const todos = useSelector(state => state.todos.todos);
+  const loading = useSelector(state => state.todos.loading);
+  
   useEffect(() => {
     dispatch(fetchTodos());
   }, []);
@@ -21,7 +22,7 @@ function App() {
     <Fragment>
       <Header/>
       <AddTodo/>
-      {todos.length!==0? todoList : <p>Loading... ⏳</p>}
+      {!loading? todoList : <h4 style={{padding: '10px'}}>Loading... ⏳</h4>}
     </Fragment>
   )
 }

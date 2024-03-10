@@ -2,11 +2,15 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const todosSlice = createSlice({
     name: 'todos',
-    initialState : [],
+    initialState : {
+        loading: true,
+        error: null,
+        todos: []
+    },
     reducers: {
         addTodo: {
             reducer: (state, action) => {
-                state.push(action.payload);
+                state.todos.push(action.payload);
             },
             prepare: (todo) => {
                 const todoItem = {todo, id: Math.trunc(Math.random()*100000), completed: false };
@@ -14,20 +18,30 @@ const todosSlice = createSlice({
             }
         },
         toggleCompleted: (state, action) => {
-            return state.map(todo => {
+            const updatedTodos = state.todos.map(todo => {
                 if(todo.id == action.payload){
                     return {...todo, completed: !todo.completed}
                 }
                 return todo;
             });
+            return { ...state, todos: updatedTodos };
         },
         deleteTodo: (state, action) => {
-            return state.filter(todo => todo.id != action.payload);
+            const updatedTodos = state.todos.filter(todo => todo.id != action.payload);
+            return {...state, todos: updatedTodos};
         }
     },
     extraReducers: (builder) => {
         builder.addCase(fetchTodos.fulfilled, (state, action) => {
-            return action.payload.todos;
+            state.loading = false;
+            state.error = null;
+            state.todos = action.payload.todos;
+        })
+        builder.addCase(fetchTodos.pending, (state, action) => {
+            state.loading = true;
+        })
+        builder.addCase(fetchTodos.rejected, (state, action) => {
+            return { ...state, loading: false, error: action.payload };
         })
     }
 });
