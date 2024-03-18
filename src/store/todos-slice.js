@@ -39,16 +39,22 @@ const todosSlice = createSlice({
         })
         builder.addCase(fetchTodos.pending, (state, action) => {
             state.loading = true;
+            state.error = null;
         })
         builder.addCase(fetchTodos.rejected, (state, action) => {
-            return { ...state, loading: false, error: action.payload };
+            return { ...state, loading: false, error: action.error };
         })
     }
 });
 
-const fetchTodos = createAsyncThunk('todos/fetchTodos', async () => {
-    const todosData = await fetch('https://dummyjson.com/todos?limit=5');
-    return await todosData.json();
+const fetchTodos = createAsyncThunk('todos/fetchTodos', async (limit = 5, thunkApi) => {
+    try {
+        const todosData = await fetch(`https://dummyjson.com/todos?limit=${limit}`, {signal: thunkApi.signal});
+        return await todosData.json();
+    } catch (error) {
+        throw error;
+        // return thunkApi.rejectWithValue('Error occured')
+    }
 })
 
 const { addTodo, deleteTodo, toggleCompleted } = todosSlice.actions;

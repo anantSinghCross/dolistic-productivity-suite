@@ -46,8 +46,8 @@ input[type=checkbox] {
 input[type=text] {
   padding: 10px;
   border: 0;
-  border-radius: 2px;
-  outline-color: tomato;
+  border-radius: 3px;
+  outline-color: blue;
   width: 100%;
 }
 

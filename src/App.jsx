@@ -11,7 +11,10 @@ function App() {
   const loading = useSelector(state => state.todos.loading);
   
   useEffect(() => {
-    dispatch(fetchTodos());
+    const promise = dispatch(fetchTodos());
+    return () => {
+      promise.abort();
+    }
   }, []);
 
   const todoList = todos.map(({ todo, id, completed }) => {
