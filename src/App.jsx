@@ -17,9 +17,9 @@ function App() {
     }
   }, []);
 
-  const todoList = todos.map(({ todo, id, completed }) => {
+  const todoList = todos.length>0? todos.map(({ todo, id, completed }) => {
     return <TodoItem key={id} id={id} text={todo} completed={completed}/>
-  });
+  }): <h4 style={{padding: '10px'}}>Start with creating a new task! ✨</h4>;
 
   return (
     <Fragment>

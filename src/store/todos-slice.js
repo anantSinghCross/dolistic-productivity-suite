@@ -17,6 +17,13 @@ const todosSlice = createSlice({
                 return { payload: todoItem };
             }
         },
+        editTodo: (state, action) => {
+            const { id, text } = action.payload;
+            const updatedTodo = state.todos.find((item) => item.id == id);
+            if(updatedTodo){
+                updatedTodo.todo = text;
+            }
+        },
         toggleCompleted: (state, action) => {
             const updatedTodos = state.todos.map(todo => {
                 if(todo.id == action.payload){
@@ -35,7 +42,7 @@ const todosSlice = createSlice({
         builder.addCase(fetchTodos.fulfilled, (state, action) => {
             state.loading = false;
             state.error = null;
-            state.todos = action.payload.todos;
+            state.todos = action.payload;
         })
         builder.addCase(fetchTodos.pending, (state, action) => {
             state.loading = true;
@@ -49,15 +56,21 @@ const todosSlice = createSlice({
 
 const fetchTodos = createAsyncThunk('todos/fetchTodos', async (limit = 5, thunkApi) => {
     try {
-        const todosData = await fetch(`https://dummyjson.com/todos?limit=${limit}`, {signal: thunkApi.signal});
-        return await todosData.json();
+        // const todosData = await fetch(`https://dummyjson.com/todos?limit=${limit}`, {signal: thunkApi.signal});
+        // return await todosData.json();
+        const todosRaw = localStorage.getItem('todos');
+        if(todosRaw){
+            return JSON.parse(todosRaw);
+        } else {
+            return [];
+        }
     } catch (error) {
         throw error;
         // return thunkApi.rejectWithValue('Error occured')
     }
 })
 
-const { addTodo, deleteTodo, toggleCompleted } = todosSlice.actions;
+const { addTodo, deleteTodo, toggleCompleted, editTodo } = todosSlice.actions;
 
-export { addTodo, toggleCompleted, deleteTodo, fetchTodos };
+export { addTodo, toggleCompleted, deleteTodo, editTodo, fetchTodos };
 export default todosSlice;
