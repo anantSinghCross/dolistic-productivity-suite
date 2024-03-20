@@ -10,10 +10,10 @@ const todosSlice = createSlice({
     reducers: {
         addTodo: {
             reducer: (state, action) => {
-                state.todos.push(action.payload);
+                state.todos.unshift(action.payload);
             },
             prepare: (todo) => {
-                const todoItem = {todo, id: Math.trunc(Math.random()*100000), completed: false };
+                const todoItem = {todo, id: Math.trunc(Math.random()*10000000), completed: false };
                 return { payload: todoItem };
             }
         },
