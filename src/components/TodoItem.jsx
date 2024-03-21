@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { deleteTodo, editTodo, toggleCompleted } from "../store/todos-slice";
 import { useDispatch } from "react-redux";
 
-function TodoItem({ id, text, completed }) {
+function TodoItem({ id, text, completed, priority, tags, completeBy }) {
   const dispatch = useDispatch();
   const [ isEditing, setIsEditing ] = useState(false);
   const [ editText, setEditText ] = useState(text);
@@ -31,7 +31,7 @@ function TodoItem({ id, text, completed }) {
         />
         {note}
       </div>
-      <div className=" flex self-start flex-nowrap">
+      <div className="flex self-start flex-nowrap">
         <button
           className="self-start p-1 px-3 m-1 bg-indigo-50 cursor-pointer text-indigo-600 rounded"
           onClick={() => {if(!isEditing){

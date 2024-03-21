@@ -8,7 +8,12 @@ function AddTodo() {
   const dispatch = useDispatch();
 
   const handleAddTodo = () => {
-    dispatch(addTodo(text));
+    const priority = 3; // 1, 2, 3
+    const tags = ['react', 'redux'];  
+    const completeBy = Date.now();
+    if(text !== ''){
+      dispatch(addTodo({todo: text, priority, tags, completeBy}));
+    }
     setText("");
   };
 
