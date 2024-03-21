@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { deleteTodo, editTodo, toggleCompleted } from "../store/todos-slice";
 import { useDispatch } from "react-redux";
+import Tag from "./Tag";
 
 function TodoItem({ id, text, completed, priority, tags, completeBy }) {
   const dispatch = useDispatch();
@@ -13,49 +14,44 @@ function TodoItem({ id, text, completed, priority, tags, completeBy }) {
     setEditText(editText);
   };
 
+  const dueDate = new Date(completeBy);
+  const tagsList = tags.map(tag => <Tag key={tag} name={tag}/>)
   const note = isEditing ? (
     <textarea
-      className=" min-h-12 h-fit w-full p-2 outline-1 outline-indigo-300"
+      className=" mb-4 mt-4 min-h-12 h-fit w-full text-sm outline-1 outline-indigo-300"
       value={editText}
       onChange={(e) => setEditText(e.target.value)}
     />
   ) : (
-    <label className=" self-start m-2 w-full" htmlFor={id}>
+    <p className="mb-4 mt-4 text-sm font-normal text-gray-700">
       {text}
-    </label>
+    </p>
   );
 
   return (
     <>
-      <div class="flex p-4">
+      <div className="flex p-4">
         <input
-          class="mr-4 mt-4 h-5 w-5 flex-shrink-0 self-start text-indigo-500"
+          className="mr-4 mt-4 h-5 w-5 flex-shrink-0 self-start text-indigo-500"
           type="checkbox"
           id={id}
           checked={completed}
           onChange={() => dispatch(toggleCompleted(id))}
         />
-        <div class="flex flex-grow items-center rounded-lg border border-gray-200 bg-white p-4">
-          <div class="flex-grow">
-            <div class="mb-1 flex items-center justify-between">
-              <p class="text-xs font-medium text-indigo-500">{`Priority: ${priority}`}</p>
-              <p class="text-xs text-gray-400">{`Due: ${completeBy}`}</p>
+        <div className="flex flex-grow items-center rounded-lg border border-gray-200 bg-white p-4">
+          <div className="flex-grow">
+            <div className="mb-1 flex items-center justify-between">
+              <p className="text-xs font-medium text-indigo-500">{`Priority: ${priority}`}</p>
+              <p className="text-xs text-gray-400">{`Due: ${dueDate.toDateString()}`}</p>
             </div>
-            <p class="mb-4 mt-4 text-sm font-normal text-gray-700">
-              {note}
-            </p>
-            <div class="flex space-x-2">
-              <span class="rounded-full bg-indigo-100 px-2 py-1 text-xs font-medium text-indigo-500">
-                Tag1
-              </span>
-              <span class="rounded-full bg-indigo-100 px-2 py-1 text-xs font-medium text-indigo-500">
-                Tag2
-              </span>
+            {note}
+            <div className="flex space-x-2 flex-wrap">
+              {tagsList}
             </div>
           </div>
         </div>
-        <div class="ml-4 flex flex-col gap-2 self-start">
-          <button class="rounded bg-indigo-500 px-2 py-1 text-xs font-medium text-white hover:bg-indigo-600"
+        <div className="ml-4 flex flex-col gap-2 self-start">
+          <button className="rounded bg-transparent px-2 py-1 text-xs font-medium text-indigo-500 hover:bg-indigo-100"
             onClick={() => {
               if (!isEditing) {
                 setIsEditing((prev) => !prev);
@@ -66,7 +62,7 @@ function TodoItem({ id, text, completed, priority, tags, completeBy }) {
           >
             {isEditing ? "Save" : "Edit"}
           </button>
-          <button class="rounded border border-indigo-500 bg-transparent px-2 py-1 text-xs font-medium text-indigo-500 hover:bg-indigo-100"
+          <button className="rounded bg-transparent px-2 py-1 text-xs font-medium text-indigo-500 hover:bg-indigo-100"
             onClick={() => dispatch(deleteTodo(id))}
           >
             Delete

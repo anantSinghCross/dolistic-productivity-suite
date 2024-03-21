@@ -9,7 +9,7 @@ function AddTodo() {
 
   const handleAddTodo = () => {
     const priority = 3; // 1, 2, 3
-    const tags = ['react', 'redux'];  
+    const tags = ['react', 'redux', 're2act', 'red3ux', 'rea4ct', 're5dux', 're6act', 're7dux', 'rea8ct', 'red8ux', 'resact', 'rsedux', 'rfeact', 'regdux'];  
     const completeBy = Date.now();
     if(text !== ''){
       dispatch(addTodo({todo: text, priority, tags, completeBy}));
