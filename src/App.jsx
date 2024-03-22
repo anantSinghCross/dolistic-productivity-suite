@@ -10,6 +10,10 @@ function App() {
     const todos = useSelector((state) => state.todos.todos);
     const loading = useSelector((state) => state.todos.loading);
 
+  // Todo: 
+  // 1. Make the priority, tags and due date also editable.
+  // 2. Make the all the fields optional other than main text.
+
     useEffect(() => {
         const promise = dispatch(fetchTodos());
         return () => {

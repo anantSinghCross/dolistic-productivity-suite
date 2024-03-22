@@ -29,9 +29,11 @@ function AddTodo() {
   const handleAddTodo = () => {
     const tags = tagsString!==''? tagsString.split(',').map(tag => tag.trim().toLowerCase()) : [];
     if (text !== "") {
-      dispatch(addTodo({ todo: text, priority, tags, completeBy:dueDate }));
+      dispatch(addTodo({ todo: text, priority:parseInt(priority), tags, completeBy:dueDate }));
     }
-    setText("");
+    setText('');
+    setTagsString('');
+    setPriority(2);
   };
 
   return (
@@ -61,7 +63,7 @@ function AddTodo() {
             </select>
           </div>
           <input
-            className=" p-1 rounded text-sm"
+            className=" py-1 px-2 rounded text-sm"
             type="text"
             placeholder="Tags (comma separated)"
             value={tagsString}

@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { deleteTodo, editTodo, toggleCompleted } from "../store/todos-slice";
 import { useDispatch } from "react-redux";
-import { BiTrash, BiPencil, BiSave, BiCalendarEvent, BiTimeFive } from "react-icons/bi";
+import { BsCalendar2EventFill } from "react-icons/bs";
+import { BiTrash, BiPencil, BiSave } from "react-icons/bi";
 import Tag from "./Tag";
+import Priority from "./Priority";
 
 function TodoItem({ id, text, completed, priority, tags, completeBy }) {
   const dispatch = useDispatch();
@@ -42,8 +44,8 @@ function TodoItem({ id, text, completed, priority, tags, completeBy }) {
         <div className="flex flex-grow items-center rounded-lg border border-gray-200 bg-white p-4">
           <div className="flex-grow">
             <div className="mb-1 flex items-center justify-between">
-              <p className="text-xs font-medium text-indigo-500">{`Priority: ${priority}`}</p>
-              <p className="flex items-center gap-1 text-xs text-gray-400"><BiCalendarEvent/>{`${dueDate.toDateString()}`} @ {`${dueDate.getHours()}:${dueDate.getMinutes()/10 < 1? '0'+dueDate.getMinutes():dueDate.getMinutes()}`}</p>
+              <Priority priority={priority}/>
+              <p className="flex items-center gap-1 text-xs text-gray-400"><BsCalendar2EventFill/>{`${dueDate.toDateString()}`} @ {`${dueDate.getHours()}:${dueDate.getMinutes()/10 < 1? '0'+dueDate.getMinutes():dueDate.getMinutes()}`}</p>
             </div>
             {note}
             <div className="flex space-x-2 flex-wrap">
