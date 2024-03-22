@@ -10,9 +10,6 @@ function App() {
     const todos = useSelector((state) => state.todos.todos);
     const loading = useSelector((state) => state.todos.loading);
 
-    //TODO: 
-    //1. Modify the AddTodo component to add priorty, completeBy date and tags
-
     useEffect(() => {
         const promise = dispatch(fetchTodos());
         return () => {

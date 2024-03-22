@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { deleteTodo, editTodo, toggleCompleted } from "../store/todos-slice";
 import { useDispatch } from "react-redux";
+import { BiTrash, BiPencil, BiSave, BiCalendarEvent, BiTimeFive } from "react-icons/bi";
 import Tag from "./Tag";
 
 function TodoItem({ id, text, completed, priority, tags, completeBy }) {
@@ -42,7 +43,7 @@ function TodoItem({ id, text, completed, priority, tags, completeBy }) {
           <div className="flex-grow">
             <div className="mb-1 flex items-center justify-between">
               <p className="text-xs font-medium text-indigo-500">{`Priority: ${priority}`}</p>
-              <p className="text-xs text-gray-400">{`Due: ${dueDate.toDateString()}`}</p>
+              <p className="flex items-center gap-1 text-xs text-gray-400"><BiCalendarEvent/>{`${dueDate.toDateString()}`} @ {`${dueDate.getHours()}:${dueDate.getMinutes()/10 < 1? '0'+dueDate.getMinutes():dueDate.getMinutes()}`}</p>
             </div>
             {note}
             <div className="flex space-x-2 flex-wrap">
@@ -50,8 +51,8 @@ function TodoItem({ id, text, completed, priority, tags, completeBy }) {
             </div>
           </div>
         </div>
-        <div className="ml-4 flex flex-col gap-2 self-start">
-          <button className="rounded bg-transparent px-2 py-1 text-xs font-medium text-indigo-500 hover:bg-indigo-100"
+        <div className="ml-4 flex flex-col items-center gap-1 self-start">
+          <button className="w-max rounded bg-transparent p-2 text-xs text-indigo-500 hover:bg-indigo-50"
             onClick={() => {
               if (!isEditing) {
                 setIsEditing((prev) => !prev);
@@ -60,12 +61,12 @@ function TodoItem({ id, text, completed, priority, tags, completeBy }) {
               }
             }}
           >
-            {isEditing ? "Save" : "Edit"}
+            {isEditing ? <BiSave className="w-5 h-5"/> : <BiPencil className="w-5 h-5"/>}
           </button>
-          <button className="rounded bg-transparent px-2 py-1 text-xs font-medium text-indigo-500 hover:bg-indigo-100"
+          <button className="w-max rounded bg-transparent p-2 text-indigo-500 hover:bg-indigo-50"
             onClick={() => dispatch(deleteTodo(id))}
           >
-            Delete
+            <BiTrash className="w-5 h-5"/>
           </button>
         </div>
       </div>
