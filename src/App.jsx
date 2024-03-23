@@ -15,6 +15,7 @@ function App() {
   // 2. Make the all the fields optional other than main text.
   // 3. Sorting and filtering options
   // 4. Add searching functionality
+  // 5. Reminders for due dates
 
     useEffect(() => {
         const promise = dispatch(fetchTodos());
