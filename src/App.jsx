@@ -16,6 +16,7 @@ function App() {
   // 3. Sorting and filtering options
   // 4. Add searching functionality
   // 5. Reminders for due dates
+  // 6. Research toggleable UI for add task form and filter section
 
     useEffect(() => {
         const promise = dispatch(fetchTodos());
