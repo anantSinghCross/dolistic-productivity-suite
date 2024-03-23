@@ -38,8 +38,8 @@ function AddTodo() {
 
   return (
     <>
-      <div className="flex items-center border bg-indigo-100">
-        <div className="flex flex-col flex-grow p-3 rounded border">
+      <div className="flex items-center bg-indigo-100">
+        <div className="flex flex-col flex-grow p-3 rounded">
           <input
             className=" p-2 rounded"
             type="text"
@@ -62,13 +62,16 @@ function AddTodo() {
               <option value="1">Low</option>
             </select>
           </div>
-          <input
-            className=" py-1 px-2 rounded text-sm"
-            type="text"
-            placeholder="Tags (comma separated)"
-            value={tagsString}
-            onChange={handleTags}
-          />
+          <div className="flex flex-grow text-sm">
+            <div className="flex items-center rounded-s bg-indigo-500 text-white"><span className="px-2">Tags</span></div>
+            <input
+              className=" w-full py-1 px-2 rounded-e"
+              type="text"
+              placeholder="comma separated tags"
+              value={tagsString}
+              onChange={handleTags}
+            />
+          </div>
         </div>
         <button
           className="self-start text-white bg-indigo-600 mt-4 mr-4 mb-4 px-3 py-1 border rounded"
