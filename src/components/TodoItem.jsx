@@ -5,6 +5,7 @@ import { BsCalendar2EventFill } from "react-icons/bs";
 import { BiTrash, BiPencil, BiSave } from "react-icons/bi";
 import Tag from "./Tag";
 import Priority from "./Priority";
+import DateComp from "./DateComp";
 import { sanitizeTags } from "../utils";
 
 function TodoItem({
@@ -31,15 +32,7 @@ function TodoItem({
   const dueDate = new Date(completeBy);
 
   const dateElement = !isEditing ? (
-    <p className="flex items-center gap-1 text-xs text-gray-400">
-      <BsCalendar2EventFill />
-      {`${dueDate.toDateString()}`} @{" "}
-      {`${dueDate.getHours()}:${
-        dueDate.getMinutes() / 10 < 1
-          ? "0" + dueDate.getMinutes()
-          : dueDate.getMinutes()
-      }`}
-    </p>
+    <DateComp completeBy={completeBy} />
   ) : (
     <input
       className=" p-2 rounded text-sm border"

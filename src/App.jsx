@@ -13,10 +13,11 @@ function App() {
   // Todo: 
   // ✅1. Make the priority, tags and due date also editable.
   // ❌2. Make all the fields optional other than main text.
-  // 3. Sorting and filtering options
-  // 4. Add searching functionality
-  // 5. Reminders for due dates
-  // 6. Research toggleable UI for add task form and filter section
+  // ⏸️3. Sorting and filtering options
+  // ⏸️4. Add searching functionality
+  // 5. Show time remaining in the UI for each Item
+  // 6. Reminders for due dates
+  // 7. Research toggleable UI for add task form and filter section
 
     useEffect(() => {
         const promise = dispatch(fetchTodos());
