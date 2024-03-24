@@ -5,30 +5,85 @@ import { BsCalendar2EventFill } from "react-icons/bs";
 import { BiTrash, BiPencil, BiSave } from "react-icons/bi";
 import Tag from "./Tag";
 import Priority from "./Priority";
+import { sanitizeTags } from "../utils";
 
-function TodoItem({ id, text, completed, priority, tags, completeBy }) {
+function TodoItem({
+  id,
+  text,
+  completed,
+  priority,
+  tags /*array*/,
+  completeBy,
+}) {
   const dispatch = useDispatch();
   const [isEditing, setIsEditing] = useState(false);
   const [editText, setEditText] = useState(text);
+  const [editPriority, setEditPriority] = useState(priority);
+  const [editTags, setEditTags] = useState(tags.join(", "));
+  const [editCompleteBy, setEditCompleteBy] = useState(completeBy);
 
   const handleEdit = () => {
-    dispatch(editTodo({ id, text: editText }));
+    const tags = sanitizeTags(editTags);
+    dispatch(editTodo({ id, text: editText, tags, priority: editPriority, completeBy:editCompleteBy }));
     setIsEditing(false);
-    setEditText(editText);
   };
 
   const dueDate = new Date(completeBy);
-  const tagsList = tags.map(tag => <Tag key={tag} name={tag}/>)
+
+  const dateElement = !isEditing ? (
+    <p className="flex items-center gap-1 text-xs text-gray-400">
+      <BsCalendar2EventFill />
+      {`${dueDate.toDateString()}`} @{" "}
+      {`${dueDate.getHours()}:${
+        dueDate.getMinutes() / 10 < 1
+          ? "0" + dueDate.getMinutes()
+          : dueDate.getMinutes()
+      }`}
+    </p>
+  ) : (
+    <input
+      className=" p-2 rounded text-sm border"
+      type="datetime-local"
+      name=""
+      id=""
+      value={editCompleteBy}
+      onChange={(e) => setEditCompleteBy(e.target.value)}
+    />
+  );
+
+  const priorityElement = !isEditing ? (
+    <Priority priority={priority} />
+  ) : (
+    <select
+      defaultValue={editPriority}
+      onChange={(e) => setEditPriority(parseInt(e.target.value))}
+      className=" p-2 rounded border text-xs"
+    >
+      <option value="3">High</option>
+      <option value="2">Normal</option>
+      <option value="1">Low</option>
+    </select>
+  );
+
+  const tagsList = !isEditing ? (
+    tags.map((tag) => <Tag key={tag} name={tag} />)
+  ) : (
+    <input
+      className=" w-full p-1 border rounded text-xs"
+      type="text"
+      value={editTags}
+      onChange={(e) => setEditTags(e.target.value)}
+    />
+  );
+
   const note = isEditing ? (
     <textarea
-      className=" mb-4 mt-4 min-h-12 h-fit w-full text-sm outline-1 outline-indigo-300"
+      className=" mb-4 mt-4 min-h-12 h-fit w-full text-sm rounded border"
       value={editText}
       onChange={(e) => setEditText(e.target.value)}
     />
   ) : (
-    <p className="mb-4 mt-4 text-sm font-normal text-gray-700">
-      {text}
-    </p>
+    <p className="mb-4 mt-4 text-sm font-normal text-gray-700">{text}</p>
   );
 
   return (
@@ -44,17 +99,16 @@ function TodoItem({ id, text, completed, priority, tags, completeBy }) {
         <div className="flex flex-grow items-center rounded-lg border border-gray-200 bg-white p-4">
           <div className="flex-grow">
             <div className="mb-1 flex items-center justify-between">
-              <Priority priority={priority}/>
-              <p className="flex items-center gap-1 text-xs text-gray-400"><BsCalendar2EventFill/>{`${dueDate.toDateString()}`} @ {`${dueDate.getHours()}:${dueDate.getMinutes()/10 < 1? '0'+dueDate.getMinutes():dueDate.getMinutes()}`}</p>
+              {priorityElement}
+              {dateElement}
             </div>
             {note}
-            <div className="flex space-x-2 flex-wrap">
-              {tagsList}
-            </div>
+            <div className="flex space-x-2 flex-wrap">{tagsList}</div>
           </div>
         </div>
         <div className="ml-4 flex flex-col items-center gap-1 self-start">
-          <button className="w-max rounded bg-transparent p-2 text-xs text-indigo-500 hover:bg-indigo-50"
+          <button
+            className="w-max rounded bg-transparent p-2 text-xs text-indigo-500 hover:bg-indigo-50"
             onClick={() => {
               if (!isEditing) {
                 setIsEditing((prev) => !prev);
@@ -63,12 +117,17 @@ function TodoItem({ id, text, completed, priority, tags, completeBy }) {
               }
             }}
           >
-            {isEditing ? <BiSave className="w-5 h-5"/> : <BiPencil className="w-5 h-5"/>}
+            {isEditing ? (
+              <BiSave className="w-5 h-5" />
+            ) : (
+              <BiPencil className="w-5 h-5" />
+            )}
           </button>
-          <button className="w-max rounded bg-transparent p-2 text-indigo-500 hover:bg-indigo-50"
+          <button
+            className="w-max rounded bg-transparent p-2 text-indigo-500 hover:bg-indigo-50"
             onClick={() => dispatch(deleteTodo(id))}
           >
-            <BiTrash className="w-5 h-5"/>
+            <BiTrash className="w-5 h-5" />
           </button>
         </div>
       </div>

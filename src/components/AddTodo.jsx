@@ -2,6 +2,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { addTodo } from "../store/todos-slice";
 import { useState } from "react";
+import { sanitizeTags } from '../utils'
 
 function AddTodo() {
   const [text, setText] = useState("");
@@ -27,7 +28,7 @@ function AddTodo() {
   }
 
   const handleAddTodo = () => {
-    const tags = tagsString!==''? tagsString.split(',').map(tag => tag.trim().toLowerCase()) : [];
+    const tags = sanitizeTags(tagsString);
     if (text !== "") {
       dispatch(addTodo({ todo: text, priority:parseInt(priority), tags, completeBy:dueDate }));
     }
@@ -56,7 +57,7 @@ function AddTodo() {
               value={dueDate}
               onChange={handleDueDate}
             />
-            <select defaultValue={priority} onChange={handlePriority} className=" p-2 rounded" name="" id="">
+            <select defaultValue={priority} onChange={handlePriority} className=" p-2 rounded">
               <option value="3">High</option>
               <option value="2">Normal</option>
               <option value="1">Low</option>

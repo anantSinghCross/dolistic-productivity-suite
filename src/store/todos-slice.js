@@ -18,10 +18,13 @@ const todosSlice = createSlice({
             },
         },
         editTodo: (state, action) => {
-            const { id, text } = action.payload;
+            const { id, text, tags, priority, completeBy } = action.payload;
             const updatedTodo = state.todos.find((item) => item.id == id);
             if (updatedTodo) {
                 updatedTodo.todo = text;
+                updatedTodo.tags = tags;
+                updatedTodo.priority = priority;
+                updatedTodo.completeBy = completeBy;
             }
         },
         toggleCompleted: (state, action) => {
