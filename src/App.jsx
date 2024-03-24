@@ -18,6 +18,7 @@ function App() {
   // 5. Show time remaining in the UI for each Item
   // 6. Reminders for due dates
   // 7. Research toggleable UI for add task form and filter section
+  // 8. Browser notifications
 
     useEffect(() => {
         const promise = dispatch(fetchTodos());

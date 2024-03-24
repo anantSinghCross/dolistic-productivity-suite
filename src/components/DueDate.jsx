@@ -1,7 +1,7 @@
 import React from "react";
 import { BsCalendar2EventFill } from "react-icons/bs";
 
-function DateComp({ completeBy }) {
+function DueDate({ completeBy }) {
 
     const dueDate = new Date(completeBy);
 
@@ -17,4 +17,4 @@ function DateComp({ completeBy }) {
     );
 }
 
-export default DateComp;
+export default DueDate;

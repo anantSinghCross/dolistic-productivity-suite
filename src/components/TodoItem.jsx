@@ -5,7 +5,7 @@ import { BsCalendar2EventFill } from "react-icons/bs";
 import { BiTrash, BiPencil, BiSave } from "react-icons/bi";
 import Tag from "./Tag";
 import Priority from "./Priority";
-import DateComp from "./DateComp";
+import DateComp from "./DueDate";
 import { sanitizeTags } from "../utils";
 
 function TodoItem({
