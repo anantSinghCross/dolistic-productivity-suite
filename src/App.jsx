@@ -15,7 +15,7 @@ function App() {
   // ❌2. Make all the fields optional other than main text.
   // ⏸️3. Sorting and filtering options
   // ⏸️4. Add searching functionality
-  // 5. Show time remaining in the UI for each Item
+  // ✅5. Show time remaining in the UI for each Item
   // 6. Reminders for due dates
   // 7. Research toggleable UI for add task form and filter section
   // 8. Browser notifications

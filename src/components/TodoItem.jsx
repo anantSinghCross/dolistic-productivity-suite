@@ -5,7 +5,7 @@ import { BsCalendar2EventFill } from "react-icons/bs";
 import { BiTrash, BiPencil, BiSave } from "react-icons/bi";
 import Tag from "./Tag";
 import Priority from "./Priority";
-import DateComp from "./DueDate";
+import DueDate from "./DueDate";
 import { sanitizeTags } from "../utils";
 
 function TodoItem({
@@ -32,13 +32,12 @@ function TodoItem({
   const dueDate = new Date(completeBy);
 
   const dateElement = !isEditing ? (
-    <DateComp completeBy={completeBy} />
+    <DueDate completeBy={completeBy} />
   ) : (
     <input
       className=" p-2 rounded text-sm border"
       type="datetime-local"
-      name=""
-      id=""
+      min={new Date().toISOString().slice(0, -8)}
       value={editCompleteBy}
       onChange={(e) => setEditCompleteBy(e.target.value)}
     />
