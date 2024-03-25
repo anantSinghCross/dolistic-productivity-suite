@@ -29,8 +29,6 @@ function TodoItem({
     setIsEditing(false);
   };
 
-  const dueDate = new Date(completeBy);
-
   const dateElement = !isEditing ? (
     <DueDate completeBy={completeBy} />
   ) : (
@@ -75,7 +73,7 @@ function TodoItem({
       onChange={(e) => setEditText(e.target.value)}
     />
   ) : (
-    <p className="mb-4 mt-4 text-sm font-normal text-gray-700">{text}</p>
+    <p className="mb-4 mt-4 text font-normal text-gray-700">{text}</p>
   );
 
   return (
@@ -100,7 +98,7 @@ function TodoItem({
         </div>
         <div className="ml-4 flex flex-col items-center gap-1 self-start">
           <button
-            className="w-max rounded bg-transparent p-2 text-xs text-indigo-500 hover:bg-indigo-50"
+            className="w-max rounded-md p-2 text-indigo-500 hover:bg-indigo-50"
             onClick={() => {
               if (!isEditing) {
                 setIsEditing((prev) => !prev);
@@ -116,7 +114,7 @@ function TodoItem({
             )}
           </button>
           <button
-            className="w-max rounded bg-transparent p-2 text-indigo-500 hover:bg-indigo-50"
+            className="w-max rounded-md p-2 text-indigo-500 hover:bg-indigo-50"
             onClick={() => dispatch(deleteTodo(id))}
           >
             <BiTrash className="w-5 h-5" />

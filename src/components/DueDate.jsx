@@ -21,7 +21,7 @@ function DueDate({ completeBy }) {
       } ${minutesDiff > 0 ? minutesDiff + "m" : ""}`}
     </span>
   );
-
+  
   return (
     <div className="flex items-center gap-1 text-xs text-gray-500">
       <p className="flex items-center gap-1">
