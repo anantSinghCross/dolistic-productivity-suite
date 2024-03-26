@@ -5,12 +5,12 @@ import TodoItem from "./components/TodoItem";
 import Header from "./components/Header";
 import AddTodo from "./components/AddTodo";
 import Filters from "./components/Filters";
-import { filterArray } from "./utils";
+import { filterArray, getUniqueTags, sortSelector } from "./utils";
 
   // TODO: 
   // ✅1. Make the priority, tags and due date also editable.
   // ✅2. Make tags optional other than main text.
-  // 3. Sorting and filtering options (sort by priority by default, SORT by priority, due date, 
+  // ⚒️3. Sorting and filtering options (sort by priority by default, SORT by priority, due date, 
   //    FILTER by tags, priority, completed)
   // 4. Add searching functionality
   // ✅5. Show time remaining in the UI for each Item
@@ -21,12 +21,12 @@ function App() {
     const dispatch = useDispatch();
     const todos = useSelector((state) => state.todos.todos);
     const loading = useSelector((state) => state.todos.loading);
+    const [ sorter, setSorter ] = useState(0);
     const [ filters, setFilters ] = useState({
-      priority: [2],
+      priority: [],
       completed: null,
-      tags: ['react', 'redux']
+      tags: []
     });
-    const [ sorter, setSorter ] = useState('priority');
 
     useEffect(() => {
         const promise = dispatch(fetchTodos());
@@ -35,10 +35,12 @@ function App() {
         };
     }, []);
 
+    const uniqueTags = getUniqueTags(todos);
+
     const todoList =
         todos.length > 0 ? (
             filterArray(todos, filters)
-            .toSorted((a, b) => b.priority - a.priority)
+            .toSorted(sortSelector(sorter))
             .map(({ todo, id, completed, priority, tags, completeBy }) => {
                 return <TodoItem key={id} id={id} text={todo} completed={completed} priority={priority} tags={tags} completeBy={completeBy} />;
             })
@@ -50,7 +52,7 @@ function App() {
         <Fragment>
             <Header />
             <AddTodo />
-            <Filters />
+            <Filters uniqueTags={uniqueTags} controls={{filters, setFilters, sorter, setSorter}} />
             {!loading ? todoList : <h4 className="p-4">Loading... ⏳</h4>}
         </Fragment>
     );

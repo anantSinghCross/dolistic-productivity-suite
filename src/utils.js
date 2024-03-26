@@ -33,12 +33,22 @@ function checkTags(item, tagsToCheck){
     return tagsToCheck.some(tag => item.tags.includes(tag));
 }
 
-function sortSelector(key){
-    if (key === null) {
+export function sortSelector(key){
+    if (key === 2) {
         return () => 0;
-    } else if (key === 'priority') {
+    } else if (key === 0) {
         return (a, b) => b.priority - a.priority;
-    } else if (key === 'completeBy') {
-        // compare dates
+    } else if (key === 1) {
+        return (a, b) => {
+            return new Date(a.completeBy) - new Date(b.completeBy);
+        }
     }
+}
+
+export function getUniqueTags(arr) {
+    let uniqueTags = new Set();
+    arr.forEach((item) => {
+        item.tags.forEach(tag => uniqueTags.add(tag));
+    });
+    return Array.from(uniqueTags);
 }
