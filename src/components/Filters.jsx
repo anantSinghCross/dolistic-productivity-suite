@@ -10,11 +10,57 @@ function Filters({ controls, uniqueTags }) {
     
     const handlePriorityChange = (e) => {
         setFilters(prevFilter => {
-            const updatedPriorities = prevFilter
+            const value = parseInt(e.target.value);
+            const s = new Set(prevFilter.priority);
+            if(s.has(value)){
+                s.delete(value);
+            } else {
+                s.add(value);
+            }
             // if it is there then remove it, if not then add it
+            const updatedPriorities = Array.from(s);
             return {
                 ...prevFilter,
-                priority: prevFilter.priority? [...prevFilter.priority, parseInt(e.target.value)]: [parseInt(e.target.value)]
+                priority: updatedPriorities
+            }
+        })
+    }
+
+    const handleStatusChange = (e) => {
+        setFilters(prevFilter => {
+            let value = e.target.value;
+            if(value === 'true'){
+                value = true;
+            } else {
+                value = false;
+            }
+            const s = new Set(prevFilter.completed);
+            if(s.has(value)){
+                s.delete(value);
+            } else {
+                s.add(value);
+            }
+            const updatedCompleted = Array.from(s);
+            return {
+                ...prevFilter,
+                completed: updatedCompleted
+            }
+        })
+    }
+
+    const handleTagsChange = (e) => {
+        setFilters(prevFilter => {
+            let value = e.target.value;
+            const s = new Set(prevFilter.tags);
+            if(s.has(value)){
+                s.delete(value);
+            } else {
+                s.add(value);
+            }
+            const updatedTags = Array.from(s);
+            return {
+                ...prevFilter,
+                tags: updatedTags
             }
         })
     }
@@ -22,7 +68,7 @@ function Filters({ controls, uniqueTags }) {
     const tagsCheckboxes = (uniqueTags && uniqueTags.length>0) ? (
         uniqueTags.map(item => {
             return (<div key={item} className=" text-sm flex items-center rounded-full bg-slate-100 px-2 pr-3">
-                <input className="flex-shrink-0 m-1" type="checkbox" id={item}/>
+                <input className="flex-shrink-0 m-1" type="checkbox" id={item} value={item} onChange={handleTagsChange}/>
                 <label className=" pb-1" htmlFor={item}>{item}</label>
             </div>)
         })
@@ -68,11 +114,11 @@ function Filters({ controls, uniqueTags }) {
                 <p>Status</p>
                 <div className="flex items-center gap-2 rounded border py-1 px-2">
                     <div className=" flex items-center">
-                        <input className="m-1" type="checkbox" id='completed'/>
+                        <input className="m-1" type="checkbox" id='completed' value={true} onChange={handleStatusChange}/>
                         <label className=" pb-1" htmlFor="completed">Done</label>
                     </div>
                     <div className=" flex items-center">
-                        <input className="m-1" type="checkbox" id='not-done'/>
+                        <input className="m-1" type="checkbox" id='not-done' value={false} onChange={handleStatusChange}/>
                         <label className=" pb-1"  htmlFor="not-done">Not Done</label>
                     </div>
                 </div>

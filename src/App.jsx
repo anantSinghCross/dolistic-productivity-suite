@@ -24,7 +24,7 @@ function App() {
     const [ sorter, setSorter ] = useState(0);
     const [ filters, setFilters ] = useState({
       priority: [],
-      completed: null,
+      completed: [],
       tags: []
     });
 

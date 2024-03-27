@@ -3,7 +3,7 @@ export function sanitizeTags(tagsString){
 }
 
 export function filterArray(arr, filterObject) {
-    const { priority/*array*/, completed/*boolean*/, tags/*array*/ } = filterObject;
+    const { priority/*array*/, completed/*array*/, tags/*array*/ } = filterObject;
     return arr.filter(item => {
         return (
             // priority check, tags check, completed check
@@ -20,10 +20,10 @@ function checkPriority(item, priorityToCheck){
 }
 
 function checkCompleted(item, completedToCheck){
-    if(completedToCheck === null){
+    if(!completedToCheck || completedToCheck.length === 0){
         return true;
     }
-    return completedToCheck === item.completed;
+    return completedToCheck.includes(item.completed);
 }
 
 function checkTags(item, tagsToCheck){
