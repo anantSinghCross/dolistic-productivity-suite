@@ -1,5 +1,7 @@
 import React from "react";
 
+// TODO: Make an accordian component
+
 function Filters({ controls, uniqueTags }) {
     
     const {filters, setFilters, sorter, setSorter} = controls;
@@ -78,9 +80,8 @@ function Filters({ controls, uniqueTags }) {
 
     return (
         <div className="flex flex-col p-3 gap-2">
-            <p>Filters</p>
             <div className="flex items-center gap-2">
-                <p>Sort</p>
+                <p>Sort by</p>
                 <select
                     defaultValue={sorter}
                     onChange={handleSorterChange}

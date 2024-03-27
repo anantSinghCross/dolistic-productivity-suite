@@ -2,19 +2,13 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { addTodo } from "../store/todos-slice";
 import { useState } from "react";
-import {
-  BiSolidPurchaseTag,
-  BiCalendarEvent,
-  BiSolidErrorCircle,
-} from "react-icons/bi";
+import { BiSolidPurchaseTag, BiCalendarEvent, BiSolidErrorCircle } from "react-icons/bi";
 import { sanitizeTags } from "../utils";
 
 function AddTodo() {
   const [text, setText] = useState("");
   const [priority, setPriority] = useState(2);
-  const [dueDate, setDueDate] = useState(
-    new Date().toISOString().slice(0, -8)
-  );
+  const [dueDate, setDueDate] = useState(new Date().toISOString().slice(0, -8));
   const [tagsString, setTagsString] = useState("");
   const dispatch = useDispatch();
 
@@ -53,14 +47,14 @@ function AddTodo() {
 
   return (
     <>
-      <div className="flex items-center bg-indigo-100">
+      <div className="flex items-center rounded-lg mr-2 ml-2 bg-indigo-50 border-2 border-indigo-200">
         <div className="flex flex-col flex-grow p-3 rounded">
           <input
             className=" p-2 rounded"
             type="text"
             placeholder="✏️ New Task!"
             value={text}
-            min={'2024-04-12T00:00'}
+            min={"2024-04-12T00:00"}
             onChange={handleText}
           />
           <div className="flex flex-row flex-grow mt-2 mb-2 gap-2">
