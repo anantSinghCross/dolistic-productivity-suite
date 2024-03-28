@@ -9,8 +9,8 @@ function App() {
     <>
       <Header/>
       <Routes>
-        <Route index path="/" element={<TaskManager/>} />
-        <Route path="/notes-manager" element={<NotesManager/>} />
+        <Route path="/" element={<TaskManager/>} />
+        <Route path="/notes" element={<NotesManager/>} />
       </Routes>
     </>
   );

@@ -1,8 +1,13 @@
-import React from 'react'
+import { Editor, EditorState } from 'draft-js'
+import React, { useState } from 'react';
+import 'draft-js/dist/Draft.css';
 
 function NotesManager() {
+  const [ editorState, setEditorState ] = useState(() => EditorState.createEmpty());
   return (
-    <div>NotesManager</div>
+    <>
+      <Editor editorState={editorState} onChange={setEditorState}/>
+    </>
   )
 }
 
