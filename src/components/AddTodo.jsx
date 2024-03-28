@@ -48,9 +48,9 @@ function AddTodo() {
   return (
     <>
       <div className="flex items-center rounded-lg mr-2 ml-2 bg-indigo-50 border-2 border-indigo-200">
-        <div className="flex flex-col flex-grow p-3 rounded">
+        <div className="flex flex-col flex-grow p-3 rounded-md">
           <input
-            className=" p-2 rounded"
+            className=" p-2 rounded-md"
             type="text"
             placeholder="✏️ New Task!"
             value={text}
@@ -59,11 +59,11 @@ function AddTodo() {
           />
           <div className="flex flex-row flex-grow mt-2 mb-2 gap-2">
             <div className="flex flex-grow text-sm">
-              <div className="flex items-center justify-center p-2 rounded-s bg-indigo-500 text-indigo-100 text-lg">
+              <div className="flex items-center justify-center p-2 rounded-s-md bg-indigo-500 text-indigo-100 text-lg">
                 <BiCalendarEvent />
               </div>
               <input
-                className=" p-2 pr-3 rounded-e flex-grow"
+                className=" p-2 pr-3 rounded-e-md flex-grow"
                 type="datetime-local"
                 min={new Date().toISOString().slice(0, -8)}
                 value={dueDate}
@@ -72,13 +72,13 @@ function AddTodo() {
             </div>
 
             <div className="flex text-sm">
-              <div className="flex items-center justify-center p-2 rounded-s bg-indigo-500 text-indigo-100 text-lg">
+              <div className="flex items-center justify-center p-2 rounded-s-md bg-indigo-500 text-indigo-100 text-lg">
                 <BiSolidErrorCircle />
               </div>
               <select
                 defaultValue={priority}
                 onChange={handlePriority}
-                className=" p-2 rounded-e text-sm"
+                className=" p-2 rounded-e-md text-sm"
               >
                 <option value="3">High</option>
                 <option value="2">Normal</option>
@@ -87,13 +87,13 @@ function AddTodo() {
             </div>
           </div>
           <div className="flex flex-grow text-sm">
-            <div className="flex items-center rounded-s bg-indigo-500 text-indigo-100 text-lg">
+            <div className="flex items-center rounded-s-md bg-indigo-500 text-indigo-100 text-lg">
               <span className="px-2">
                 <BiSolidPurchaseTag />
               </span>
             </div>
             <input
-              className=" w-full p-2 rounded-e"
+              className=" w-full p-2 rounded-e-md"
               type="text"
               placeholder="comma separated tags"
               value={tagsString}
@@ -102,7 +102,7 @@ function AddTodo() {
           </div>
         </div>
         <button
-          className="self-start text-white bg-indigo-600 mt-4 mr-4 mb-4 px-3 py-1 border rounded"
+          className="self-start text-white bg-indigo-600 mt-4 mr-4 mb-4 px-3 py-1 rounded-md"
           onClick={handleAddTodo}
         >
           Add

@@ -18,7 +18,7 @@ import SearchBar from "./components/SearchBar";
 // ✅5. Show time remaining in the UI for each Item
 // ❌6. Reminders for due dates (Browser notifications)
 // ✅7. Research toggleable UI for add task form and filter section
-// 8. Reducee width on fullscreen
+// 8. Reduce width on fullscreen
 // 9. Deploy 
 // 10. Work on the Notes section 
 
