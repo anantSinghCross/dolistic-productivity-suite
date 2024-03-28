@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { deleteTodo, editTodo, toggleCompleted } from "../store/todos-slice";
+import { deleteTodo, editTodo, toggleCompleted } from "../../store/todos-slice";
 import { useDispatch } from "react-redux";
 import { BsCalendar2EventFill } from "react-icons/bs";
 import { BiTrash, BiPencil, BiSave } from "react-icons/bi";
 import Tag from "./Tag";
 import Priority from "./Priority";
 import DueDate from "./DueDate";
-import { sanitizeTags } from "../utils";
+import { sanitizeTags } from "../../utils";
 
 function TodoItem({
   id,

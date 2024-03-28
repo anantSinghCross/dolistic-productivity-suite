@@ -1,9 +1,9 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { addTodo } from "../store/todos-slice";
+import { addTodo } from "../../store/todos-slice";
 import { useState } from "react";
 import { BiSolidPurchaseTag, BiCalendarEvent, BiSolidErrorCircle } from "react-icons/bi";
-import { sanitizeTags } from "../utils";
+import { sanitizeTags } from "../../utils";
 
 function AddTodo() {
   const [text, setText] = useState("");
