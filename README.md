@@ -1,6 +1,6 @@
 # Do-Listic 📝
 ### Overview
-Do-Listic is a productivity suite with a clean and minilaistic design that has several features that would help you to be on top of your tasks as well as takes care of any daily productivity needs you might have.
+Do-Listic is a robust and performant productivity suite with a clean and minilaistic design that has several features that would help you to be on top of your tasks as well as takes care of any daily productivity needs you might have.
 
 ### Features ✨
  - Task Manager
