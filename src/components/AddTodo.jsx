@@ -17,7 +17,7 @@ function AddTodo() {
   };
 
   const handleDueDate = (e) => {
-    setDueDate(e.target.value);
+    setDueDate(e.target.value); 
   };
 
   const handlePriority = (e) => {
