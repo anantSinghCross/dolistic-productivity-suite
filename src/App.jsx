@@ -1,6 +1,6 @@
 import React from "react";
 import TaskManager from "./taskManager/TaskManager";
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Header from "./common/Header";
 import NotesManager from "./notesManager/NotesManager";
 
