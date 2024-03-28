@@ -69,7 +69,7 @@ const fetchTodos = createAsyncThunk("todos/fetchTodos", async (limit = 5, thunkA
         }
     } catch (error) {
         throw error;
-        // return thunkApi.rejectWithValue('Error occured')
+        // OR return thunkApi.rejectWithValue('Error occured')
     }
 });
 
