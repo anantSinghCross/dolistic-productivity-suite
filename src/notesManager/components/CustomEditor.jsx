@@ -1,18 +1,36 @@
-import { Editor, EditorState, RichUtils, DefaultDraftBlockRenderMap } from "draft-js";
-import React, { useState } from "react";
-import { BiBold, BiItalic, BiUnderline, BiCodeAlt } from "react-icons/bi";
+import { Editor, EditorState, RichUtils, DefaultDraftBlockRenderMap, ContentState, convertToRaw, convertFromRaw } from "draft-js";
+import React, { useEffect, useRef, useState } from "react";
+import { BiBold, BiItalic, BiUnderline, BiCodeAlt, BiSolidQuoteAltRight } from "react-icons/bi";
 import ControlButton from "./ControlButton";
 import "draft-js/dist/Draft.css";
 import { blockRenderMap } from "../blockWrappers/blockRenderMap";
 
 function CustomEditor() {
   const [editorState, setEditorState] = useState(() => EditorState.createEmpty());
+  const isFirstRender = useRef(true);
+  
+  useEffect(() => {
+    if(isFirstRender.current){
+      isFirstRender.current = false;
+      const stringData = localStorage.getItem('editorState');
+      const rawData = stringData? JSON.parse(stringData) : null;
+      if(rawData !== null){
+        setEditorState(EditorState.createWithContent(convertFromRaw(rawData)));
+      }
+    } else {
+      const contentState = convertToRaw(editorState.getCurrentContent());
+      localStorage.setItem('editorState', JSON.stringify(contentState));
+    }
+  }, [editorState])
 
   const onBoldClick = () => setEditorState(RichUtils.toggleInlineStyle(editorState, "BOLD"));
   const onItalicsClick = () => setEditorState(RichUtils.toggleInlineStyle(editorState, "ITALIC"));
   const onUndlerlineClick = () => setEditorState(RichUtils.toggleInlineStyle(editorState, "UNDERLINE"));
   const onCodeClick = () => setEditorState(RichUtils.toggleInlineStyle(editorState, "CODE"));
   const onH1Click = () => setEditorState(RichUtils.toggleBlockType(editorState, "custom-h1"));
+  const onH2Click = () => setEditorState(RichUtils.toggleBlockType(editorState, "custom-h2"));
+  const onH3Click = () => setEditorState(RichUtils.toggleBlockType(editorState, "custom-h3"));
+  const onQuoteClick = () => setEditorState(RichUtils.toggleBlockType(editorState, "custom-blockquote"));
 
   const handleKeyCommand = (command, editorState) => {
     const newState = RichUtils.handleKeyCommand(editorState, command);
@@ -33,11 +51,15 @@ function CustomEditor() {
         <ControlButton onClick={onUndlerlineClick} name={<BiUnderline/>}/>
         <ControlButton onClick={onCodeClick} name={<BiCodeAlt/>}/>
         |
-        <ControlButton onClick={onH1Click} name={'H1'}/>
+        <ControlButton onClick={onH1Click} name={'H1'} className="text-xs"/>
+        <ControlButton onClick={onH2Click} name={'H2'} className="text-xs"/>
+        <ControlButton onClick={onH3Click} name={'H3'} className="text-xs"/>
+        <ControlButton onClick={onQuoteClick} name={<BiSolidQuoteAltRight/>}/>
 
       </div>
       <div className=" rounded border p-2">
         <Editor
+          placeholder="Start your note here... ✍️"
           blockRenderMap={extendedBlockRenderMap}
           editorState={editorState}
           onChange={setEditorState}
