@@ -2,13 +2,14 @@ import { Editor, EditorState, RichUtils, DefaultDraftBlockRenderMap, ContentStat
 import React, { useEffect, useRef, useState } from "react";
 import { BiBold, BiItalic, BiUnderline, BiCodeAlt, BiSolidQuoteAltRight } from "react-icons/bi";
 import ControlButton from "./ControlButton";
-import "draft-js/dist/Draft.css";
 import { blockRenderMap } from "../blockWrappers/blockRenderMap";
+import "draft-js/dist/Draft.css";
 
 function CustomEditor() {
   const [editorState, setEditorState] = useState(() => EditorState.createEmpty());
   const isFirstRender = useRef(true);
   
+  // Move this to redux
   useEffect(() => {
     if(isFirstRender.current){
       isFirstRender.current = false;
