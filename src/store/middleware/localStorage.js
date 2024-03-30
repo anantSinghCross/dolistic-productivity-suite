@@ -1,9 +1,8 @@
 import { createListenerMiddleware, isAnyOf } from "@reduxjs/toolkit";
 import { addTodo, deleteTodo, toggleCompleted, editTodo } from "../todos-slice";
 
-export const writeToLocalStorage = createListenerMiddleware()
-
 // only saving the todos list state not the auth state
+export const writeToLocalStorage = createListenerMiddleware()
 writeToLocalStorage.startListening({
     matcher: isAnyOf(addTodo, deleteTodo, toggleCompleted, editTodo),
     effect: async (action, listenerApi) => {
@@ -12,7 +11,11 @@ writeToLocalStorage.startListening({
             localStorage.setItem('todos', JSON.stringify(todos));
         }
     }
-})
+});
+
+// saving draft state to localStorage (by debouncing)
+export const writeDraftToLocalStorage = createListenerMiddleware();
+
 
 // Regular Middleware commented below (would run before the state changes happen)
 // export const writeToLocalStorage = store => next => action => {
