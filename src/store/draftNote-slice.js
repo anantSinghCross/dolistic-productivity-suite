@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { convertFromRaw } from "draft-js";
 
 const draftNoteSlice = createSlice({
   name: "draftNote",
@@ -19,9 +18,7 @@ const draftNoteSlice = createSlice({
 const fetchDraftNote = createAsyncThunk("draftNote/fetchDraftNote", async ( _, thunkApi ) => {
   const contentString = localStorage.getItem("editorState");
   const contentRaw = contentString? JSON.parse(contentString) : null;
-  if (contentRaw !== null) {
-    return convertFromRaw(contentRaw);
-  }
+  return contentRaw;
 });
 
 const { save } = draftNoteSlice.actions;

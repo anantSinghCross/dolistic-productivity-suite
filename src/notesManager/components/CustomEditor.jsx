@@ -4,24 +4,27 @@ import { BiBold, BiItalic, BiUnderline, BiCodeAlt, BiSolidQuoteAltRight } from "
 import ControlButton from "./ControlButton";
 import { blockRenderMap } from "../blockWrappers/blockRenderMap";
 import "draft-js/dist/Draft.css";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchDraftNote, save } from "../../store/draftNote-slice";
 
 function CustomEditor() {
+  const dispatch = useDispatch();
   const [editorState, setEditorState] = useState(() => EditorState.createEmpty());
+  const draftNoteContentRaw = useSelector(state => state.draftNote);
   const isFirstRender = useRef(true);
-  
-  // Move this to redux
+
+  useEffect(() => {
+    dispatch(fetchDraftNote())
+    .then((action) => {
+      setEditorState(EditorState.createWithContent(convertFromRaw(action.payload)));
+    })
+  }, []);
   useEffect(() => {
     if(isFirstRender.current){
       isFirstRender.current = false;
-      const stringData = localStorage.getItem('editorState');
-      const rawData = stringData? JSON.parse(stringData) : null;
-      if(rawData !== null){
-        setEditorState(EditorState.createWithContent(convertFromRaw(rawData)));
-      }
-    } else {
-      const contentState = convertToRaw(editorState.getCurrentContent());
-      localStorage.setItem('editorState', JSON.stringify(contentState));
+      return;
     }
+    dispatch(save(convertToRaw(editorState.getCurrentContent())));
   }, [editorState])
 
   const onBoldClick = () => setEditorState(RichUtils.toggleInlineStyle(editorState, "BOLD"));

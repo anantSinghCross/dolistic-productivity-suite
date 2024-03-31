@@ -55,3 +55,5 @@ export function getUniqueTags(arr) {
   });
   return Array.from(uniqueTags);
 }
+
+// TODO: write a generic debouce function to use in writeDraftToLocalStorage
