@@ -1,7 +1,5 @@
 import React from "react";
 
-// TODO: Make an accordian component
-
 function Filters({ controls, uniqueTags }) {
     
     const {filters, setFilters, sorter, setSorter} = controls;

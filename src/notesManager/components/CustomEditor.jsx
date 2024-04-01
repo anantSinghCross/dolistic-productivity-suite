@@ -10,21 +10,24 @@ import { fetchDraftNote, save } from "../../store/draftNote-slice";
 function CustomEditor() {
   const dispatch = useDispatch();
   const [editorState, setEditorState] = useState(() => EditorState.createEmpty());
-  const draftNoteContentRaw = useSelector(state => state.draftNote);
   const isFirstRender = useRef(true);
+  // const draftNoteContentRaw = useSelector(state => state.draftNote)
 
   useEffect(() => {
     dispatch(fetchDraftNote())
     .then((action) => {
-      setEditorState(EditorState.createWithContent(convertFromRaw(action.payload)));
+      if (action.payload) {
+        setEditorState(EditorState.createWithContent(convertFromRaw(action.payload)));
+      }
     })
   }, []);
   useEffect(() => {
-    if(isFirstRender.current){
+    if(isFirstRender.current) { // because we want to prevent saving empty state to localStorage
       isFirstRender.current = false;
       return;
     }
-    dispatch(save(convertToRaw(editorState.getCurrentContent())));
+    const content = convertToRaw(editorState.getCurrentContent());
+    dispatch(save(content));
   }, [editorState])
 
   const onBoldClick = () => setEditorState(RichUtils.toggleInlineStyle(editorState, "BOLD"));
