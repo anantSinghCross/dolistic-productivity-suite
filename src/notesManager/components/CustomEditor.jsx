@@ -20,6 +20,7 @@ function CustomEditor() {
       }
     })
   }, []);
+  
   useEffect(() => {
     if(isFirstRender.current) { // because we want to prevent saving empty state to localStorage
       isFirstRender.current = false;
