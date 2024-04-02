@@ -24,7 +24,7 @@ writeDraftToLocalStorage.startListening({
       if (draftNoteContentState) {
         localStorage.setItem('editorState', JSON.stringify(draftNoteContentState));
       }
-      console.log('Write to localStorage');
+      // console.log('Write to localStorage');
     }, 500 ),
 });
 

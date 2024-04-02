@@ -4,10 +4,10 @@ import 'draft-js/dist/Draft.css';
 import CustomEditor from './components/CustomEditor';
 
 // TODO:
-// 0. Fix the error first
-// 1. Make an AddNote component that has Tags Title and CustomEditor and set the state of the editor from props passed doen from AddNote component
-// 2. Select state from redux store and then use it in Tags title and Custom editor
-// 3. Do not save the tags in the draft slice
+// 1. Make Custom editor into AddNote and add Title and Tags
+// 2. Select state from redux store and then use it in Tags Title and Custom editor
+
+// 3. Try to use raw JSON as prop and then initialize editorState using props (create a reusable custom editor)
 
 function NotesManager() {
   const [ editorState, setEditorState ] = useState(() => EditorState.createEmpty());
