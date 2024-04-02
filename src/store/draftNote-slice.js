@@ -2,10 +2,15 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const draftNoteSlice = createSlice({
   name: "draftNote",
-  initialState: null, // raw JSON
+  initialState: {
+    title: 'Your new note',
+    content: null,
+    createdAt: '',
+    updatedAt: '',
+  }, // raw JSON
   reducers: {
-    save: (state, action) => {
-      return action.payload;
+    save: (state, action) => { // whole state needs to be saved
+      state.content = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -15,6 +20,7 @@ const draftNoteSlice = createSlice({
   }
 });
 
+// Saves the whole state as a string in localStorage
 const fetchDraftNote = createAsyncThunk("draftNote/fetchDraftNote", async ( _, thunkApi ) => {
   const contentString = localStorage.getItem("editorState");
   const contentRaw = contentString? JSON.parse(contentString) : null;

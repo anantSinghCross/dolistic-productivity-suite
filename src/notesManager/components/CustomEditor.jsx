@@ -15,8 +15,9 @@ function CustomEditor() {
   useEffect(() => {
     dispatch(fetchDraftNote())
     .then((action) => {
-      if (action.payload) {
-        setEditorState(EditorState.createWithContent(convertFromRaw(action.payload)));
+      const content = action?.payload?.content;
+      if (action.payload && content) {
+        setEditorState(EditorState.createWithContent(convertFromRaw(content)));
       }
     })
   }, []);
