@@ -56,6 +56,14 @@ export function getUniqueTags(arr) {
   return Array.from(uniqueTags);
 }
 
-// TODO: write a generic debouce function to use in writeDraftToLocalStorage 
-// (research whether you want to debounce the useEffect fn or the localStorage middleware fn)
-// TODO: test if there was no draft state in localStorage, woudld the code work
+export function debounced(fn, delay = 250) {
+  let timeoutId = null;
+  return function (...args) {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+    timeoutId = setTimeout(() => {
+      fn(...args);
+    }, delay);
+  };
+}

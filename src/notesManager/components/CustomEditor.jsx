@@ -1,17 +1,16 @@
-import { Editor, EditorState, RichUtils, DefaultDraftBlockRenderMap, ContentState, convertToRaw, convertFromRaw } from "draft-js";
 import React, { useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
 import { BiBold, BiItalic, BiUnderline, BiCodeAlt, BiSolidQuoteAltRight } from "react-icons/bi";
+import { Editor, EditorState, RichUtils, DefaultDraftBlockRenderMap, convertToRaw, convertFromRaw } from "draft-js";
 import ControlButton from "./ControlButton";
 import { blockRenderMap } from "../blockWrappers/blockRenderMap";
-import "draft-js/dist/Draft.css";
-import { useDispatch, useSelector } from "react-redux";
 import { fetchDraftNote, save } from "../../store/draftNote-slice";
+import "draft-js/dist/Draft.css";
 
 function CustomEditor() {
   const dispatch = useDispatch();
   const [editorState, setEditorState] = useState(() => EditorState.createEmpty());
   const isFirstRender = useRef(true);
-  // const draftNoteContentRaw = useSelector(state => state.draftNote)
 
   useEffect(() => {
     dispatch(fetchDraftNote())

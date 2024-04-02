@@ -10,10 +10,9 @@ import Accordian from "./components/Accordian";
 import SearchBar from "./components/SearchBar";
 
 // TODO:
-// 1. Reminders for due dates (Browser notifications)
-// 2. Reduce width on fullscreen
-// 3. Deploy
-// 4. Work on the Notes section
+// 1. Create a notes slice to keep all the notes and research the design of each note (complete the website by 6th April)
+// 2. Deploy on google cloud run by 7th April
+// 2. Reduce todos width on fullscreen
 
 function TaskManager() {
   const dispatch = useDispatch();
