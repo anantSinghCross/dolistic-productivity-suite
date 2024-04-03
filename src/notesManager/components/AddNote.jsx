@@ -6,6 +6,8 @@ import ControlButton from "./ControlButton";
 import { blockRenderMap } from "../blockWrappers/blockRenderMap";
 import { fetchDraftNote, save } from "../../store/draftNote-slice";
 import "draft-js/dist/Draft.css";
+import { addNote } from "../../store/notes-slice";
+import { sanitizeTags } from "../../utils";
 
 function AddNote() {
   const dispatch = useDispatch();
@@ -60,7 +62,11 @@ function AddNote() {
   const handleTagsChange = (e) => setTagsStr(e.target.value)
 
   const handleSaveNote = () => {
-    console.log('Note Saved!')
+    dispatch(addNote({
+      title,
+      tags: sanitizeTags(tagsStr),
+      content: convertToRaw(editorState.getCurrentContent())
+    }))
   }
 
   const extendedBlockRenderMap = DefaultDraftBlockRenderMap.merge(blockRenderMap);
@@ -92,7 +98,7 @@ function AddNote() {
         </div>
       </div>
       <input className="py-1 px-2 rounded-md border font-semibold text-sm text-slate-500 outline-indigo-400" placeholder="Tags (comma separated)" type="text" value={tagsStr} onChange={handleTagsChange}/>
-      <button className=" bg-indigo-600 p-1 px-3 text-white rounded-md w-max" onClick={handleSaveNote}>Save</button>
+      <button className=" bg-indigo-600 p-1 px-3 text-white rounded-md w-full sm:w-max" onClick={handleSaveNote}>Save</button>
     </div>
   );
 }
