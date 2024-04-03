@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  title: 'Your new note',
+  title: '',
   tagsStr: '',
   content: null,
   createdAt: '',
@@ -13,7 +13,9 @@ const draftNoteSlice = createSlice({
   initialState: initialState, // raw JSON
   reducers: {
     save: (state, action) => { // whole state needs to be saved
-      state.content = action.payload;
+      state.content = action.payload.content;
+      state.title = action.payload.title;
+      state.tagsStr = action.payload.tagsStr;
     },
   },
   extraReducers: (builder) => {

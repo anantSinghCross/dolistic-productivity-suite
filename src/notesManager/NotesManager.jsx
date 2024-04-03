@@ -1,13 +1,14 @@
 import { Editor, EditorState, RichUtils } from 'draft-js'
 import React, { useState } from 'react';
 import 'draft-js/dist/Draft.css';
-import CustomEditor from './components/CustomEditor';
+import AddNote from './components/AddNote';
 
 // TODO:
-// 1. Make Custom editor into AddNote and add Title and Tags
-// 2. Select state from redux store and then use it in Tags Title and Custom editor
+// 1. Make note-slice and handle saving of note. Keep track of createdAt, updatedAt timestamps.
+// 2. Implement editing of notes
+// 3. Add searching, sorting and filtering of notes according to the behance website UI
 
-// 3. Try to use raw JSON as prop and then initialize editorState using props (create a reusable custom editor)
+// 10. Try to use raw JSON as prop and then initialize editorState using props (create a reusable custom editor)
 
 function NotesManager() {
   const [ editorState, setEditorState ] = useState(() => EditorState.createEmpty());
@@ -23,8 +24,7 @@ function NotesManager() {
 
   return (
     <div className=' mr-2 ml-2 p-2 rounded-lg border-2'>
-      <p>New Note ✨</p>
-      <CustomEditor/>
+      <AddNote/>
     </div>
   )
 }
