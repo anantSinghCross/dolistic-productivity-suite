@@ -7,7 +7,7 @@ import NoteItem from "./components/NoteItem";
 import { fetchNotes } from "../store/notes-slice";
 
 // TODO:
-// 1. Work on noteslist display (See the tailwind playground)
+// ✅1. Work on noteslist display (See the tailwind playground)
 // 2. Implement editing of notes (use Router here)
 // 3. Add searching, sorting and filtering of notes according to the behance website UI
 
@@ -28,7 +28,9 @@ function NotesManager() {
       <div className=" mr-2 ml-2 p-2 rounded-lg border-2">
         <AddNote />
       </div>
-      { notesList }
+      <div className="grid grid-cols-1 p-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+        { notesList }
+      </div>
     </>
   );
 }
