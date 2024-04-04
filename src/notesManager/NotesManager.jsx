@@ -28,7 +28,7 @@ function NotesManager() {
       <div className=" mr-2 ml-2 p-2 rounded-lg border-2">
         <AddNote />
       </div>
-      <div className="grid grid-cols-1 p-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+      <div className="grid grid-cols-1 p-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mt-2">
         { notesList }
       </div>
     </>
