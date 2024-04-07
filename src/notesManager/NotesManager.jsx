@@ -4,7 +4,7 @@ import "draft-js/dist/Draft.css";
 import AddNote from "./components/AddNote";
 import { useDispatch, useSelector } from "react-redux";
 import NoteItem from "./components/NoteItem";
-import { fetchNotes } from "../store/notes-slice";
+import { deleteNote, fetchNotes } from "../store/notes-slice";
 
 // TODO:
 // ✅1. Work on noteslist display (See the tailwind playground)
@@ -14,14 +14,18 @@ import { fetchNotes } from "../store/notes-slice";
 // 10. Try to use raw JSON as prop and then initialize editorState using props (create a reusable custom editor)
 
 function NotesManager() {
-
   useEffect(() => {
     dispatch(fetchNotes());
-  }, [])
+  }, []);
 
   const dispatch = useDispatch();
   const notes = useSelector((state) => state.notes);
-  const notesList = (notes && notes.length > 0) ? notes.map(({ id, ...otherProps }) => <NoteItem key={id} {...otherProps} />) : null;
+  const notesList =
+    notes && notes.length > 0
+      ? notes.map(({ id, ...otherProps }) => (
+          <NoteItem key={id} id={id} {...otherProps} />
+        ))
+      : null;
 
   return (
     <>
@@ -29,7 +33,7 @@ function NotesManager() {
         <AddNote />
       </div>
       <div className="grid grid-cols-1 p-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mt-2">
-        { notesList }
+        {notesList}
       </div>
     </>
   );
