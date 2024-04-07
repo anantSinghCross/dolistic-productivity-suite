@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { deleteNote } from "../../store/notes-slice";
 import { useDispatch } from "react-redux";
 
-function NoteMenu({ noteId }) {
+function NoteMenu({ noteId, title, tags, content, }) {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
 
@@ -12,13 +12,9 @@ function NoteMenu({ noteId }) {
     setShowMenu((p) => !p);
   };
 
-  const blurHandler = () => {
-    setShowMenu(false);
-  }
-
   const menu = showMenu ? (
     <div className="flex flex-col gap-1 absolute p-1 right-0 shadow rounded-md w-max h-max bg-white overflow-clip text-sm text-slate-600">
-      <Link>
+      <Link to={`/notes/edit`} state={{noteId, title, tags, content}}>
         <button className=" w-full rounded hover:bg-slate-100 px-2 py-1">Edit</button>
       </Link>
       <button onClick={() => dispatch(deleteNote(noteId))} className="rounded hover:bg-slate-100 px-2 py-1">Delete</button>

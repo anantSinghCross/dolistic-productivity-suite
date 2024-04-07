@@ -7,8 +7,8 @@ import NoteItem from "./components/NoteItem";
 import { deleteNote, fetchNotes } from "../store/notes-slice";
 
 // TODO:
-// ✅1. Work on noteslist display (See the tailwind playground)
-// 2. Implement editing of notes (use Router here)
+// 1. Implement editing of notes (use Router here)
+// 2. Make the AddNote route also separate from the noteList (see behance UI), handle when user is editing or adding a new note
 // 3. Add searching, sorting and filtering of notes according to the behance website UI
 
 // 10. Try to use raw JSON as prop and then initialize editorState using props (create a reusable custom editor)
@@ -32,7 +32,7 @@ function NotesManager() {
       <div className=" mr-2 ml-2 p-2 rounded-lg border-2">
         <AddNote />
       </div>
-      <div className="grid grid-cols-1 p-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mt-2">
+      <div className="grid grid-cols-1 p-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 mt-2">
         {notesList}
       </div>
     </>

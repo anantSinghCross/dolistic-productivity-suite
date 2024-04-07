@@ -12,7 +12,7 @@ function App() {
       <Routes>
         <Route path="/" element={<TaskManager />} />
         <Route path="/notes" element={<NotesManager />} />
-        <Route path="/notes/edit/:id" element={<AddNote />} />
+        <Route path="/notes/edit" element={<AddNote />} />
       </Routes>
     </>
   );

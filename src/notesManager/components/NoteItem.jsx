@@ -14,7 +14,7 @@ function NoteItem({ id, title, tags, content, createdAt }) {
             <p className="mb-1 text-xs text-slate-400">{catDate.toDateString()}</p>
             <p className="mb-3 text-lg font-semibold text-slate-800">{title}</p>
           </div>
-          <NoteMenu noteId={id}/>
+          <NoteMenu noteId={id} title={title} tags={tags} content={content}/>
         </div>
         <p className="mb-3 border-l p-2 text-slate-600">{convertFromRaw(content).getPlainText()}</p>
       </div>

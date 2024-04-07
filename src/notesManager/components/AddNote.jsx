@@ -8,27 +8,38 @@ import { fetchDraftNote, save } from "../../store/draftNote-slice";
 import "draft-js/dist/Draft.css";
 import { addNote } from "../../store/notes-slice";
 import { sanitizeTags } from "../../utils";
+import { useLocation } from "react-router-dom";
 
+// if location is present then take everything from location state other wise from drafts
 function AddNote() {
+  const location = useLocation();
   const dispatch = useDispatch();
   const draftNote = useSelector(state => state.draftNote);
-  const [editorState, setEditorState] = useState(() => EditorState.createEmpty());
-  const [title, setTitle] = useState(draftNote.title);
-  const [tagsStr, setTagsStr] = useState(draftNote.tagsStr);
+  const [editorState, setEditorState] = useState(() => {
+    return location.state ? EditorState.createWithContent(convertFromRaw(location.state.content)) : EditorState.createEmpty();
+  });
+  const [title, setTitle] = useState(() => {
+    return location.state ? location.state.title : draftNote.title;
+  });
+  const [tagsStr, setTagsStr] = useState(() => {
+    return location.state ? location.state.tags.join(', ') : draftNote.tagsStr;
+  });
   const isFirstRender = useRef(true);
 
   useEffect(() => {
-    dispatch(fetchDraftNote())
-    .then((action) => {
-      const content = action?.payload?.content;
-      const title = action?.payload?.title;
-      const tagsStr = action?.payload?.tagsStr;
-      setTitle(title);
-      setTagsStr(tagsStr);
-      if (action.payload && content) {
-        setEditorState(EditorState.createWithContent(convertFromRaw(content)));
-      }
-    })
+    if(!location.state){
+      dispatch(fetchDraftNote())
+      .then((action) => {
+        const content = action?.payload?.content;
+        const title = action?.payload?.title;
+        const tagsStr = action?.payload?.tagsStr;
+        setTitle(title);
+        setTagsStr(tagsStr);
+        if (action.payload && content) {
+          setEditorState(EditorState.createWithContent(convertFromRaw(content)));
+        }
+      })
+    }
   }, []);
 
   useEffect(() => {
@@ -66,7 +77,10 @@ function AddNote() {
       title,
       tags: sanitizeTags(tagsStr),
       content: convertToRaw(editorState.getCurrentContent())
-    }))
+    }));
+    setTitle('');
+    setTagsStr('');
+    setEditorState(EditorState.createEmpty());
   }
 
   const extendedBlockRenderMap = DefaultDraftBlockRenderMap.merge(blockRenderMap);
