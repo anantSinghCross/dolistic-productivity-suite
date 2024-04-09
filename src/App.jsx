@@ -13,6 +13,8 @@ function App() {
         <Route path="/" element={<TaskManager />} />
         <Route path="/notes" element={<NotesManager />} />
         <Route path="/notes/edit" element={<AddNote />} />
+        <Route path="/notes/add" element={<AddNote />} />
+        <Route path="*" element={<div className="text-lg m-3">Couldn't Find What You're Looking For! 😓</div>} />
       </Routes>
     </>
   );

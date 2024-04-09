@@ -40,6 +40,11 @@ function AddNote() {
         }
       })
     }
+    return () => {
+      if(location.state){ // meaning i've entered from edit (view) option
+        console.log('Save the state');
+      }
+    }
   }, []);
 
   useEffect(() => {
@@ -86,7 +91,7 @@ function AddNote() {
   const extendedBlockRenderMap = DefaultDraftBlockRenderMap.merge(blockRenderMap);
 
   return (
-    <div className="flex flex-col gap-3 m-2 mt-3">
+    <div className="flex flex-col gap-3 m-5">
       <input className="p-2 rounded-md border text-sm font-semibold outline-indigo-400" placeholder="Title" type="text" value={title} onChange={handleTitleChange}/>
       <div>
         <div className="flex gap-1 items-center flex-wrap mt-2 mb-2">
