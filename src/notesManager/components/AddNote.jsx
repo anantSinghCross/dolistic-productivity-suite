@@ -1,35 +1,43 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { BiBold, BiItalic, BiUnderline, BiCodeAlt, BiSolidQuoteAltRight } from "react-icons/bi";
-import { Editor, EditorState, RichUtils, DefaultDraftBlockRenderMap, convertToRaw, convertFromRaw } from "draft-js";
-import ControlButton from "./ControlButton";
-import { blockRenderMap } from "../blockWrappers/blockRenderMap";
-import { fetchDraftNote, save } from "../../store/draftNote-slice";
+import {
+  DefaultDraftBlockRenderMap,
+  Editor,
+  EditorState,
+  RichUtils,
+  convertFromRaw,
+  convertToRaw,
+} from "draft-js";
 import "draft-js/dist/Draft.css";
-import { addNote } from "../../store/notes-slice";
-import { sanitizeTags } from "../../utils";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { BiBold, BiCodeAlt, BiItalic, BiSolidQuoteAltRight, BiUnderline } from "react-icons/bi";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
+import { fetchDraftNote, save } from "../../store/draftNote-slice";
+import { addNote } from "../../store/notes-slice";
+import { debounced, sanitizeTags } from "../../utils";
+import { blockRenderMap } from "../blockWrappers/blockRenderMap";
+import ControlButton from "./ControlButton";
 
 // if location is present then take everything from location state other wise from drafts
 function AddNote() {
   const location = useLocation();
   const dispatch = useDispatch();
-  const draftNote = useSelector(state => state.draftNote);
+  const draftNote = useSelector((state) => state.draftNote);
   const [editorState, setEditorState] = useState(() => {
-    return location.state ? EditorState.createWithContent(convertFromRaw(location.state.content)) : EditorState.createEmpty();
+    return location.state
+      ? EditorState.createWithContent(convertFromRaw(location.state.content))
+      : EditorState.createEmpty();
   });
   const [title, setTitle] = useState(() => {
     return location.state ? location.state.title : draftNote.title;
   });
   const [tagsStr, setTagsStr] = useState(() => {
-    return location.state ? location.state.tags.join(', ') : draftNote.tagsStr;
+    return location.state ? location.state.tags.join(", ") : draftNote.tagsStr;
   });
   const isFirstRender = useRef(true);
 
   useEffect(() => {
-    if(!location.state){
-      dispatch(fetchDraftNote())
-      .then((action) => {
+    if (!location.state) {
+      dispatch(fetchDraftNote()).then((action) => {
         const content = action?.payload?.content;
         const title = action?.payload?.title;
         const tagsStr = action?.payload?.tagsStr;
@@ -38,32 +46,33 @@ function AddNote() {
         if (action.payload && content) {
           setEditorState(EditorState.createWithContent(convertFromRaw(content)));
         }
-      })
-    }
-    return () => {
-      if(location.state){ // meaning i've entered from edit (view) option
-        console.log('Save the state');
-      }
+      });
     }
   }, []);
 
   useEffect(() => {
-    if(isFirstRender.current) { // because we want to prevent saving empty state to localStorage
-      isFirstRender.current = false;
-      return;
+    if (!location.state) {
+      // change the draftNote slice
+      if (isFirstRender.current) {
+        // because we want to prevent saving empty state to localStorage
+        isFirstRender.current = false;
+        return;
+      }
+      const content = convertToRaw(editorState.getCurrentContent());
+      dispatch(save({ title, tagsStr, content }));
     }
-    const content = convertToRaw(editorState.getCurrentContent());
-    dispatch(save({title, tagsStr, content}));
-  }, [editorState, title, tagsStr])
+  }, [editorState, title, tagsStr]);
 
   const onBoldClick = () => setEditorState(RichUtils.toggleInlineStyle(editorState, "BOLD"));
   const onItalicsClick = () => setEditorState(RichUtils.toggleInlineStyle(editorState, "ITALIC"));
-  const onUndlerlineClick = () => setEditorState(RichUtils.toggleInlineStyle(editorState, "UNDERLINE"));
+  const onUndlerlineClick = () =>
+    setEditorState(RichUtils.toggleInlineStyle(editorState, "UNDERLINE"));
   const onCodeClick = () => setEditorState(RichUtils.toggleInlineStyle(editorState, "CODE"));
   const onH1Click = () => setEditorState(RichUtils.toggleBlockType(editorState, "custom-h1"));
   const onH2Click = () => setEditorState(RichUtils.toggleBlockType(editorState, "custom-h2"));
   const onH3Click = () => setEditorState(RichUtils.toggleBlockType(editorState, "custom-h3"));
-  const onQuoteClick = () => setEditorState(RichUtils.toggleBlockType(editorState, "custom-blockquote"));
+  const onQuoteClick = () =>
+    setEditorState(RichUtils.toggleBlockType(editorState, "custom-blockquote"));
 
   const handleKeyCommand = (command, editorState) => {
     const newState = RichUtils.handleKeyCommand(editorState, command);
@@ -74,37 +83,48 @@ function AddNote() {
     return "not-handled";
   };
 
-  const handleTitleChange = (e) => setTitle(e.target.value)
-  const handleTagsChange = (e) => setTagsStr(e.target.value)
+  const handleTitleChange = (e) => setTitle(e.target.value);
+  const handleTagsChange = (e) => setTagsStr(e.target.value);
 
   const handleSaveNote = () => {
-    dispatch(addNote({
-      title,
-      tags: sanitizeTags(tagsStr),
-      content: convertToRaw(editorState.getCurrentContent())
-    }));
-    setTitle('');
-    setTagsStr('');
+    if(!location.state){ // means it's a new note
+      dispatch(
+        addNote({
+          title,
+          tags: sanitizeTags(tagsStr),
+          content: convertToRaw(editorState.getCurrentContent()),
+        })
+      );
+    } else { // means it's being edited
+      
+    }
+    setTitle("");
+    setTagsStr("");
     setEditorState(EditorState.createEmpty());
-  }
+  };
 
   const extendedBlockRenderMap = DefaultDraftBlockRenderMap.merge(blockRenderMap);
 
   return (
     <div className="flex flex-col gap-3 m-5">
-      <input className="p-2 rounded-md border text-sm font-semibold outline-indigo-400" placeholder="Title" type="text" value={title} onChange={handleTitleChange}/>
+      <input
+        className="p-2 rounded-md border text-sm font-semibold outline-indigo-400"
+        placeholder="Title"
+        type="text"
+        value={title}
+        onChange={handleTitleChange}
+      />
       <div>
         <div className="flex gap-1 items-center flex-wrap mt-2 mb-2">
-          <ControlButton onClick={onBoldClick} name={<BiBold/>}/>
-          <ControlButton onClick={onItalicsClick} name={<BiItalic/>}/>
-          <ControlButton onClick={onUndlerlineClick} name={<BiUnderline/>}/>
-          <ControlButton onClick={onCodeClick} name={<BiCodeAlt/>}/>
+          <ControlButton onClick={onBoldClick} name={<BiBold />} />
+          <ControlButton onClick={onItalicsClick} name={<BiItalic />} />
+          <ControlButton onClick={onUndlerlineClick} name={<BiUnderline />} />
+          <ControlButton onClick={onCodeClick} name={<BiCodeAlt />} />
           |
-          <ControlButton onClick={onH1Click} name={'H1'} className="text-xs"/>
-          <ControlButton onClick={onH2Click} name={'H2'} className="text-xs"/>
-          <ControlButton onClick={onH3Click} name={'H3'} className="text-xs"/>
-          <ControlButton onClick={onQuoteClick} name={<BiSolidQuoteAltRight/>}/>
-
+          <ControlButton onClick={onH1Click} name={"H1"} className="text-xs" />
+          <ControlButton onClick={onH2Click} name={"H2"} className="text-xs" />
+          <ControlButton onClick={onH3Click} name={"H3"} className="text-xs" />
+          <ControlButton onClick={onQuoteClick} name={<BiSolidQuoteAltRight />} />
         </div>
         <div className=" rounded border p-2">
           <Editor
@@ -116,8 +136,19 @@ function AddNote() {
           />
         </div>
       </div>
-      <input className="py-1 px-2 rounded-md border font-semibold text-sm text-slate-500 outline-indigo-400" placeholder="Tags (comma separated)" type="text" value={tagsStr} onChange={handleTagsChange}/>
-      <button className=" bg-indigo-600 p-1 px-3 text-white rounded-md w-full sm:w-max" onClick={handleSaveNote}>Save</button>
+      <input
+        className="py-1 px-2 rounded-md border font-semibold text-sm text-slate-500 outline-indigo-400"
+        placeholder="Tags (comma separated)"
+        type="text"
+        value={tagsStr}
+        onChange={handleTagsChange}
+      />
+      <button
+        className=" bg-indigo-600 p-1 px-3 text-white rounded-md w-full sm:w-max"
+        onClick={handleSaveNote}
+      >
+        Save
+      </button>
     </div>
   );
 }
