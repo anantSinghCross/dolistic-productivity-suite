@@ -7,18 +7,19 @@ import {
   convertToRaw,
 } from "draft-js";
 import "draft-js/dist/Draft.css";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { BiBold, BiCodeAlt, BiItalic, BiSolidQuoteAltRight, BiUnderline } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { fetchDraftNote, save } from "../../store/draftNote-slice";
 import { addNote } from "../../store/notes-slice";
-import { debounced, sanitizeTags } from "../../utils";
+import { sanitizeTags } from "../../utils";
 import { blockRenderMap } from "../blockWrappers/blockRenderMap";
 import ControlButton from "./ControlButton";
 
 // if location is present then take everything from location state other wise from drafts
 function AddNote() {
+  const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
   const draftNote = useSelector((state) => state.draftNote);
@@ -87,7 +88,8 @@ function AddNote() {
   const handleTagsChange = (e) => setTagsStr(e.target.value);
 
   const handleSaveNote = () => {
-    if(!location.state){ // means it's a new note
+    if (!location.state) {
+      // means it's a new note
       dispatch(
         addNote({
           title,
@@ -95,8 +97,22 @@ function AddNote() {
           content: convertToRaw(editorState.getCurrentContent()),
         })
       );
-    } else { // means it's being edited
-      
+    } else {
+      // means it's being edited, directly save it to localStorage
+      let editedNote = {
+        id: location.state.noteId,
+        title,
+        tags: sanitizeTags(tagsStr),
+        content: convertToRaw(editorState.getCurrentContent()),
+        createdAt: location.state.createdAt,
+        updatedAt: location.state.updatedAt,
+      };
+      let allNotes = JSON.parse(localStorage.getItem('notes'));
+      let updatedNotes = allNotes.map(note => {
+        if(note.id == location.state.noteId){ return editedNote; } return note;
+      });
+      localStorage.setItem('notes', JSON.stringify(updatedNotes));
+      navigate('/notes');
     }
     setTitle("");
     setTagsStr("");
