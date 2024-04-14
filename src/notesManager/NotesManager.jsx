@@ -30,7 +30,11 @@ function NotesManager() {
   };
   const notesList =
     notes && notes.length > 0
-      ? notes.map(({ id, ...otherProps }) => <NoteItem key={id} id={id} {...otherProps} />)
+      ? notes
+          .filter((note) => {
+            return (tagFilter.length===0 || note.tags.some(tag => tagFilter.includes(tag)));
+          })
+          .map(({ id, ...otherProps }) => <NoteItem key={id} id={id} {...otherProps} />)
       : null;
 
   useEffect(() => {
