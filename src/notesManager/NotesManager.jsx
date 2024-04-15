@@ -6,6 +6,7 @@ import { fetchNotes } from "../store/notes-slice";
 import NoteItem from "./components/NoteItem";
 import { getUniqueTags } from "../utils";
 import Tags from "./components/Tags";
+import SearchBar from "../taskManager/components/SearchBar";
 
 // TODO:
 // ☑️1. Implement editing of notes (handle saving it using Save button only in AddNote)
@@ -49,6 +50,9 @@ function NotesManager() {
   return (
     <>
       <div className="flex justify-between m-2 mt-4">
+        <div>
+          <SearchBar controls={{searchText:'', setSearchText: () => {}}}/>
+        </div>
         <Tags tags={tags} tagFilter={tagFilter} toggleTagFilter={toggleTagFilter} />
         <Link to="/notes/add">
           <button className="p-1 px-3 text-slate-600 border rounded-lg hover:bg-slate-100">
