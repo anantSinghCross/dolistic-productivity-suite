@@ -10,7 +10,7 @@ import NoteItem from "./components/NoteItem";
 // 1. Implement editing of notes (save draft in localStorage and not in draftState of new note)
 // 2. Make the AddNote route also separate from the noteList (see behance UI), handle when user is editing or adding a new note
 // 3. Make Tag filtering functional in notes
-// 3. Add searching, sorting and filtering of notes according to the behance website UI
+// 3. Add searching, sorting and filtering of notes according to the behance website UI 
 
 function NotesManager() {
   useEffect(() => {
