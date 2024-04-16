@@ -10,9 +10,10 @@ import SearchBar from "../taskManager/components/SearchBar";
 import { convertFromRaw } from "draft-js";
 
 // TODO:
-// ☑️1. Implement editing of notes (handle saving it using Save button only in AddNote)
-// 2. Make Tag filtering functional in notes
-// 3. Add searching, sorting and filtering of notes according to the behance website UI
+// 1. Deploy the site on GCP Cloud Run (research about all free tiers in GCP)
+// 2. Develop Goal Tracker
+// 3. Develop backend with Node.js and MongoDB OR Node.js and FireStore OR just FireStore 
+//    (research what is best compatible with GCP Cloud Run)
 
 function NotesManager() {
   const dispatch = useDispatch();
