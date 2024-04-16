@@ -86,7 +86,7 @@ function TodoItem({
           checked={completed}
           onChange={() => dispatch(toggleCompleted(id))}
         />
-        <div className="flex flex-grow items-center rounded-lg border border-gray-200 bg-white p-4">
+        <div className="flex flex-grow items-center rounded-lg border-2 border-gray-200 bg-white p-4">
           <div className="flex-grow">
             <div className="mb-1 flex items-center justify-between">
               {priorityElement}
@@ -98,7 +98,7 @@ function TodoItem({
         </div>
         <div className="ml-4 flex flex-col items-center gap-1 self-start">
           <button
-            className="w-max rounded-md p-2 text-indigo-500 hover:bg-indigo-50"
+            className="w-max rounded-md p-2 text-slate-500 hover:bg-slate-100"
             onClick={() => {
               if (!isEditing) {
                 setIsEditing((prev) => !prev);
@@ -114,7 +114,7 @@ function TodoItem({
             )}
           </button>
           <button
-            className="w-max rounded-md p-2 text-indigo-500 hover:bg-indigo-50"
+            className="w-max rounded-md p-2 text-slate-500 hover:bg-slate-100"
             onClick={() => dispatch(deleteTodo(id))}
           >
             <BiTrash className="w-5 h-5" />
