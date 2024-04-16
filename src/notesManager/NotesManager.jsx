@@ -50,17 +50,19 @@ function NotesManager() {
   return (
     <>
       <div className="flex justify-between m-2 mt-4">
-        <div>
+        <div className="flex flex-col w-full gap-2">
           <SearchBar controls={{searchText:'', setSearchText: () => {}}}/>
+          <div className="flex justify-between mt-1">
+            <Tags tags={tags} tagFilter={tagFilter} toggleTagFilter={toggleTagFilter} />
+            <Link to="/notes/add">
+              <button className="p-1 px-3 text-slate-600 border rounded-lg hover:bg-slate-100">
+                Add Note
+              </button>
+            </Link>
+          </div>
         </div>
-        <Tags tags={tags} tagFilter={tagFilter} toggleTagFilter={toggleTagFilter} />
-        <Link to="/notes/add">
-          <button className="p-1 px-3 text-slate-600 border rounded-lg hover:bg-slate-100">
-            Add Note
-          </button>
-        </Link>
       </div>
-      <div className="grid grid-cols-1 p-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 mt-2">
+      <div className="grid grid-cols-1 px-2  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
         {notesList}
       </div>
     </>

@@ -54,7 +54,9 @@ function TaskManager() {
   return (
     <>
       <AddTodo />
-      <SearchBar controls={{ searchText, setSearchText }} />
+      <div className="mx-2">
+        <SearchBar controls={{ searchText, setSearchText }} />
+      </div>
       <Accordian title={"Filters"}>
         <Filters uniqueTags={uniqueTags} controls={{ filters, setFilters, sorter, setSorter }} />
       </Accordian>
