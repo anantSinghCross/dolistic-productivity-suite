@@ -7,6 +7,7 @@ import NoteItem from "./components/NoteItem";
 import { getUniqueTags } from "../utils";
 import Tags from "./components/Tags";
 import SearchBar from "../taskManager/components/SearchBar";
+import { convertFromRaw } from "draft-js";
 
 // TODO:
 // ☑️1. Implement editing of notes (handle saving it using Save button only in AddNote)
@@ -18,6 +19,7 @@ function NotesManager() {
   const notes = useSelector((state) => state.notes);
   const [tags, setTags] = useState([]);
   const [tagFilter, setTagFilter] = useState([]); // Will have selected filters in an array
+  const [searchText, setSearchText] = useState("");
   const toggleTagFilter = (tagName) => {
     setTagFilter((p) => {
       let s = new Set(p);
@@ -33,7 +35,10 @@ function NotesManager() {
     notes && notes.length > 0
       ? notes
           .filter((note) => {
-            return (tagFilter.length===0 || note.tags.some(tag => tagFilter.includes(tag)));
+            return convertFromRaw(note.content).getPlainText().toLowerCase().includes(searchText.toLowerCase());
+          })
+          .filter((note) => {
+            return tagFilter.length === 0 || note.tags.some((tag) => tagFilter.includes(tag));
           })
           .map(({ id, ...otherProps }) => <NoteItem key={id} id={id} {...otherProps} />)
       : null;
@@ -51,8 +56,8 @@ function NotesManager() {
     <>
       <div className="flex justify-between m-2 mt-4">
         <div className="flex flex-col w-full gap-2">
-          <SearchBar controls={{searchText:'', setSearchText: () => {}}}/>
-          <div className="flex justify-between mt-1">
+          <SearchBar controls={{ searchText, setSearchText }} />
+          <div className="flex justify-between mt-2">
             <Tags tags={tags} tagFilter={tagFilter} toggleTagFilter={toggleTagFilter} />
             <Link to="/notes/add">
               <button className="p-1 px-3 text-slate-600 border rounded-lg hover:bg-slate-100">
@@ -62,7 +67,7 @@ function NotesManager() {
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-1 px-2  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+      <div className="grid grid-cols-1 px-2  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 mt-2">
         {notesList}
       </div>
     </>
