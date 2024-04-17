@@ -14,7 +14,7 @@ import { convertFromRaw } from "draft-js";
 // 2. Develop Goal Tracker
 // 3. Develop backend with Node.js and MongoDB OR Node.js and FireStore OR just FireStore 
 //    (research what is best compatible with GCP Cloud Run)
-
+ 
 function NotesManager() {
   const dispatch = useDispatch();
   const notes = useSelector((state) => state.notes);
