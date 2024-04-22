@@ -47,7 +47,7 @@ function AddTodo() {
 
   return (
     <>
-      <div className="flex items-center rounded-lg mr-2 ml-2 bg-indigo-50 border-2 border-indigo-200">
+      <div className="flex items-center rounded-lg mr-2 ml-2 bg-slate-200">
         <div className="flex flex-col flex-grow p-3 rounded-md">
           <input
             className=" p-2 rounded-md"

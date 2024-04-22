@@ -26,6 +26,12 @@ function Header() {
         >
           Notes
         </NavLink>
+        <NavLink
+          to="/goals"
+          className={activeClass}
+        >
+          Goals
+        </NavLink>
       </menu>
     </nav>
   );

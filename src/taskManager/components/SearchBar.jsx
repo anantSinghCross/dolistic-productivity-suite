@@ -5,7 +5,7 @@ function SearchBar({ controls }) {
   return (
     <div className="flex">
       <input
-        className=" w-full mt-2 border-2 outline-indigo-600 border-indigo-200 rounded-lg p-2"
+        className="w-full mt-2 bg-slate-100 outline-indigo-500 rounded-lg p-2"
         type="text"
         placeholder="🔎 Search your tasks..."
         value={searchText}
