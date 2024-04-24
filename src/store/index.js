@@ -4,6 +4,7 @@ import todosSlice from "./todos-slice";
 import { writeDraftToLocalStorage, writeNotesToLocalStorage, writeTodosToLocalStorage } from "./middleware/localStorage";
 import draftNoteSlice from "./draftNote-slice";
 import notesSlice from "./notes-slice";
+import goalsSlice from "./goals-slice";
 
 const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ const store = configureStore({
     todos: todosSlice.reducer,
     draftNote: draftNoteSlice.reducer,
     notes: notesSlice.reducer,
+    goals: goalsSlice.reducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat([
