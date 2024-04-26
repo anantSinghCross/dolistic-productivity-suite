@@ -22,12 +22,17 @@ function TodoItem({
   const [editPriority, setEditPriority] = useState(priority);
   const [editTags, setEditTags] = useState(tags.join(", "));
   const [editCompleteBy, setEditCompleteBy] = useState(completeBy);
+  const [showModal, setShowModal] = useState(false);
 
   const handleEdit = () => {
     const tags = sanitizeTags(editTags);
     dispatch(editTodo({ id, text: editText, tags, priority: editPriority, completeBy:editCompleteBy }));
     setIsEditing(false);
   };
+
+  const handleDelete = () => {
+    dispatch(deleteTodo(id))
+  }
 
   const dateElement = !isEditing ? (
     <DueDate completeBy={completeBy} />
@@ -115,7 +120,7 @@ function TodoItem({
           </button>
           <button
             className="w-max rounded-md p-2 text-slate-500 hover:bg-slate-100"
-            onClick={() => dispatch(deleteTodo(id))}
+            onClick={handleDelete}
           >
             <BiTrash className="w-5 h-5" />
           </button>

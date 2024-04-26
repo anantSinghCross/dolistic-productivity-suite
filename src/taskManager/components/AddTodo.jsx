@@ -34,6 +34,9 @@ function AddTodo() {
 
     const handleAddTodo = () => {
         const tags = sanitizeTags(tagsString);
+        setText("");
+        setTagsString("");
+        setPriority(2);
         if (text !== "") {
             dispatch(
                 addTodo({
@@ -43,10 +46,10 @@ function AddTodo() {
                     completeBy: dueDate,
                 })
             );
+            return true;
+        } else {
+            return false;
         }
-        setText("");
-        setTagsString("");
-        setPriority(2);
     };
 
     return (
@@ -59,10 +62,16 @@ function AddTodo() {
             {showModal &&
                 createPortal(
                     <Modal
-                        setVisible={setShowModal}
+                        confirmBtnText="Add"
+                        onConfirm={() => {
+                            if (handleAddTodo()) {
+                                setShowModal(false);
+                            }
+                        }}
+                        onCancel={() => setShowModal(false)}
                         body={
                             <div class="flex flex-col items-center rounded-lg w-max">
-                                <div class="flex flex-col flex-grow p-3 rounded-md">
+                                <div class="flex flex-col flex-grow rounded-md">
                                     <input class=" border p-2 rounded-md" type="text" placeholder="✏️ New Task!" value={text} min={"2024-04-12T00:00"} onChange={handleText} />
                                     <div class="flex flex-row flex-grow mt-2 mb-2 gap-2">
                                         <div class="flex flex-grow text-sm">
@@ -91,9 +100,6 @@ function AddTodo() {
                                         </div>
                                         <input class=" border w-full p-2 rounded-e-md" type="text" placeholder="comma separated tags" value={tagsString} onChange={handleTags} />
                                     </div>
-                                    <button class="self-end text-white bg-indigo-500 mt-4 px-3 py-1 rounded-md" onClick={handleAddTodo}>
-                                        Add
-                                    </button>
                                 </div>
                             </div>
                         }
