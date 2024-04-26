@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import { fetchTodos } from "../store/todos-slice";
 import { useDispatch, useSelector } from "react-redux";
 import TodoItem from "./components/TodoItem";
-import Header from "../common/Header";
 import AddTodo from "./components/AddTodo";
 import Filters from "./components/Filters";
 import { filterArray, getUniqueTags, sortSelector } from "../utils";
 import Accordian from "./components/Accordian";
 import SearchBar from "./components/SearchBar";
+import { createPortal } from "react-dom";
+import Modal from "../common/Modal";
 
 function TaskManager() {
     const dispatch = useDispatch();
@@ -43,7 +44,7 @@ function TaskManager() {
 
     return (
         <>
-            <AddTodo />
+            <AddTodo/>
             {todos && todos.length > 0 ? (
                 <>
                     <div className="mx-2">
