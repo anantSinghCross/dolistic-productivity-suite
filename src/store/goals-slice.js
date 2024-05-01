@@ -4,8 +4,18 @@ const goalsSlice = createSlice({
   name: "goals",
   initialState: [],
   reducers: {
-    addGoal: (state, action) => {},
-    deleteGoal: (state, actions) => {},
+    addGoal: {
+      reducer: (state, action) => {
+        state.unshift(action.payload);
+      },
+      prepare: (goal) => {
+        return { ...goal, id: Math.trunc(Math.random()*100000000)}
+      }
+    },
+    deleteGoal: (state, actions) => {
+      const id = action.payload;
+      return state.filter(item => item.id != id)
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchGoals.fulfilled, (state, action) => {
