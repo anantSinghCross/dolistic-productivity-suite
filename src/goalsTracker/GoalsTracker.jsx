@@ -2,8 +2,8 @@ import React from 'react'
 
 function GoalsTracker() {
   return (
-    <div>
-        Goal Tracker
+    <div className=' w-full h-20 text-center'>
+        Work in Progress ⚒️
     </div>
   )
 }

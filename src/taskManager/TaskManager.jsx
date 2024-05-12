@@ -39,7 +39,7 @@ function TaskManager() {
                     return <TodoItem key={id} id={id} text={todo} completed={completed} priority={priority} tags={tags} completeBy={completeBy} />;
                 })
         ) : (
-            <h4 className="p-4">Start with creating a new task! ✨</h4>
+            <h4 className="p-4 text-center">Start with creating a new task! ✨</h4>
         );
 
     return (
@@ -55,7 +55,7 @@ function TaskManager() {
                     </Accordian>
                 </>
             ) : null}
-            {!loading ? todoList : <h4 className="p-4">Loading... ⏳</h4>}
+            {!loading ? todoList : <h4 className="p-4 text-center">Loading... ⏳</h4>}
         </>
     );
 }
