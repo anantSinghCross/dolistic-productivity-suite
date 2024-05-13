@@ -160,7 +160,7 @@ function AddNote() {
         onChange={handleTagsChange}
       />
       <button
-        className=" bg-indigo-600 p-1 px-3 text-white rounded-md w-full sm:w-max"
+        className="primary-grad-btn w-full sm:w-max"
         onClick={handleSaveNote}
       >
         Save

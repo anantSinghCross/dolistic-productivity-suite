@@ -91,9 +91,9 @@ function TodoItem({
           checked={completed}
           onChange={() => dispatch(toggleCompleted(id))}
         />
-        <div className="flex flex-grow items-center rounded-lg border-2 border-gray-200 bg-white p-4">
+        <div className="flex flex-grow items-center border rounded-2xl shadow-lg shadow-gray-100 border-gray-200 bg-white p-4">
           <div className="flex-grow">
-            <div className="mb-1 flex items-center justify-between">
+            <div className="mb-1 flex flex-col xs:flex-row items-center justify-between">
               {priorityElement}
               {dateElement}
             </div>

@@ -27,7 +27,7 @@ function DueDate({ completeBy }) {
   );
 
   return (
-    <div className="flex items-center gap-1 text-xs text-gray-500">
+    <div className="flex flex-col sm:flex-row items-center gap-1 text-xs text-gray-500">
       <p className="flex items-center gap-1">
         <BiSolidCalendarEvent />
         {`${dueDate.toDateString()}`},

@@ -9,6 +9,7 @@ import Accordian from "./components/Accordian";
 import SearchBar from "./components/SearchBar";
 import { createPortal } from "react-dom";
 import Modal from "../common/Modal";
+import { motion } from "framer-motion";
 
 function TaskManager() {
     const dispatch = useDispatch();
