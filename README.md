@@ -2,6 +2,13 @@
 ### Overview
 Do-Listic is a robust and performant productivity suite with a clean and minilaistic design that has several features that would help you to be on top of your tasks as well as takes care of any daily productivity needs you might have.
 
+Currently all the data is stored on the local storage. Future updates will sync all your notes, tasks and goals in your account.
+
+***
+**Visit the app here [DoListic 📝]().** Please not that the UI is a work in progress.
+
+***
+
 ### Features ✨
  - Task Manager
  - Notes Manager

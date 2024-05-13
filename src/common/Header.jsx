@@ -11,7 +11,7 @@ const activeClass = ({isActive}) => {
 
 function Header() {
   return (
-    <nav className="flex justify-between items-center p-4 bg-white">
+    <nav className="flex justify-between items-center p-4 bg-gradient-to-b from-indigo-300 via-30% via-blue-200">
       <h1 className="text-lg font-medium">DoListic 📝</h1>
       <menu className="flex gap-2">
         <NavLink

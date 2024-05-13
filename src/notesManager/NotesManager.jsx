@@ -61,7 +61,7 @@ function NotesManager() {
           <div className="flex justify-between mt-2">
             <Tags tags={tags} tagFilter={tagFilter} toggleTagFilter={toggleTagFilter} />
             <Link to="/notes/add">
-              <button className="p-1 px-3 text-slate-600 border rounded-lg hover:bg-slate-100">
+              <button className="primary-grad-btn">
                 Add Note
               </button>
             </Link>

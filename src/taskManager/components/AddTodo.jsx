@@ -55,7 +55,7 @@ function AddTodo() {
     return (
         <>
             <div className="flex justify-end p-2">
-                <button onClick={() => setShowModal(true)} className="p-1 px-3 text-slate-600 border rounded-lg hover:bg-slate-100">
+                <button onClick={() => setShowModal(true)} className="primary-grad-btn">
                     Add Task
                 </button>
             </div>

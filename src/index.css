@@ -7,3 +7,7 @@
   padding: 0;
   margin: 0;
 }
+
+.primary-grad-btn {
+  @apply p-2 px-4 rounded-md text-sm font-medium text-white bg-gradient-to-tr from-indigo-600 to-blue-500 shadow-lg shadow-indigo-300;
+}
