@@ -5,7 +5,7 @@ Do-Listic is a robust and performant productivity suite with a clean and minilai
 Currently all the data is stored on the local storage. Future updates will sync all your notes, tasks and goals in your account.
 
 ***
-**Visit the app here [DoListic 📝]().** Please not that the UI is a work in progress.
+**Visit the app here [DoListic 📝](https://dolistic-productivity-suite.onrender.com/).** Please not that the UI is a work in progress.
 
 ***
 
