@@ -1,5 +1,32 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
+/* 
+Initial state structure would look like below
+goals:[
+  {
+    title: string,
+    desc: string,
+    targetDate: Date,
+    progress: number,
+    tasks: [
+      {
+        completed: boolean,
+        text: string,
+        subTasks: [
+          {
+            completed: boolean,
+            text: string,
+          },
+          ...
+        ]
+      },
+      ...
+    ]
+  },
+  ...
+]
+*/
+
 const goalsSlice = createSlice({
   name: "goals",
   initialState: [],
