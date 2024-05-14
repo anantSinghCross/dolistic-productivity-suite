@@ -36,7 +36,12 @@ const goalsSlice = createSlice({
         state.unshift(action.payload);
       },
       prepare: (goal) => {
-        return { ...goal, id: Math.trunc(Math.random()*100000000)}
+        return {
+          payload:{
+            ...goal, 
+            id: Math.trunc(Math.random()*100000000)
+          }
+        }
       }
     },
     deleteGoal: (state, actions) => {
