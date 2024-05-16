@@ -7,18 +7,11 @@ goals:[
     title: string,
     desc: string,
     targetDate: Date,
-    progress: number,
+    progress: number Derived in redux prepare function,
     tasks: [
       {
         completed: boolean,
         text: string,
-        subTasks: [
-          {
-            completed: boolean,
-            text: string,
-          },
-          ...
-        ]
       },
       ...
     ]

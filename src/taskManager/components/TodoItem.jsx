@@ -22,7 +22,6 @@ function TodoItem({
   const [editPriority, setEditPriority] = useState(priority);
   const [editTags, setEditTags] = useState(tags.join(", "));
   const [editCompleteBy, setEditCompleteBy] = useState(completeBy);
-  const [showModal, setShowModal] = useState(false);
 
   const handleEdit = () => {
     const tags = sanitizeTags(editTags);
