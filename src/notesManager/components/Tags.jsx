@@ -10,7 +10,7 @@ function Tags({
       key={tag}
       onClick={() => toggleTagFilter(tag)}
       className={`px-3 rounded-md  ${
-        tagFilter.includes(tag) ? "bg-indigo-600 text-white" : "bg-slate-100"
+        tagFilter.includes(tag) ? "bg-indigo-500 text-white shadow-inner" : "bg-slate-100"
       } `}
     >
       {`${tag[0].toUpperCase()}${tag.slice(1)}`}

@@ -7,7 +7,7 @@ function NoteItem({ id, title, tags, content, createdAt, updatedAt }) {
   const tagsList = tags ? tags.map((tag) => <NoteTag key={tag} tag={tag} />) : null;
   const catDate = new Date(createdAt);
   return (
-    <div className="flex flex-col justify-between rounded-md border-2 p-3">
+    <div className="flex flex-col justify-between border-2 rounded-2xl shadow-lg shadow-gray-100 border-gray-200 bg-white p-3">
       <div className="flex flex-col">
         <div className="flex justify-between ">
           <div className="flex flex-col">

@@ -83,7 +83,7 @@ function TodoItem({
 
   return (
     <>
-      <div className="flex p-3">
+      <div className="flex px-2 py-1">
         <input
           className="mr-4 mt-4 h-5 w-5 flex-shrink-0 self-start text-indigo-500"
           type="checkbox"
