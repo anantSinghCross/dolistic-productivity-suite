@@ -1,5 +1,32 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
+/* 
+Initial state structure would look like below
+goals:[
+  {
+    title: string,
+    desc: string,
+    targetDate: Date,
+    progress: number,
+    tasks: [
+      {
+        completed: boolean,
+        text: string,
+        subTasks: [
+          {
+            completed: boolean,
+            text: string,
+          },
+          ...
+        ]
+      },
+      ...
+    ]
+  },
+  ...
+]
+*/
+
 const goalsSlice = createSlice({
   name: "goals",
   initialState: [],
@@ -9,7 +36,12 @@ const goalsSlice = createSlice({
         state.unshift(action.payload);
       },
       prepare: (goal) => {
-        return { ...goal, id: Math.trunc(Math.random()*100000000)}
+        return {
+          payload:{
+            ...goal, 
+            id: Math.trunc(Math.random()*100000000)
+          }
+        }
       }
     },
     deleteGoal: (state, actions) => {
