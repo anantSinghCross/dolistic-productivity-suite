@@ -13,7 +13,7 @@ function DueDate({ completeBy }) {
   const hoursDiff = requiredDate.getHours() - firstDate.getHours();
   const minutesDiff = requiredDate.getMinutes() - firstDate.getMinutes();
 
-  const styleClass = overdue ? "bg-red-100 px-1 text-red-600" : "bg-slate-100 px-1 text-slate-600";
+  const styleClass = overdue ? "bg-pink-100 px-1 text-pink-600" : "bg-slate-100 px-1 text-slate-600";
 
   const diffElement = (
     <span className={`flex items-center gap-1 rounded-full ${styleClass}`}>
