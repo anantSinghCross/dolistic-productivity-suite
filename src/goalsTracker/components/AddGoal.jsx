@@ -14,7 +14,7 @@ function AddGoal() {
           <Modal
           onCancel={() => setShowModal(false)}
             body={
-              <div className="flex flex-col rounded-lg max-w-2xl w-[90vw] items-stretch">
+              <div className="flex flex-col rounded-lg w-full items-stretch">
                 <div className=" mb-2 flex items-center w-full gap-2">
                   <div className="rounded-md h-5 w-full shadow-inner bg-gray-50">
                     <div className="rounded-md h-5 w-[80%] bg-gradient-to-t from-green-300 to-teal-400 shadow-md shadow-teal-100"></div>

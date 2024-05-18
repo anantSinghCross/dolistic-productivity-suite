@@ -70,38 +70,36 @@ function AddTodo() {
                         }}
                         onCancel={() => setShowModal(false)}
                         body={
-                            <div class="flex flex-col items-center rounded-lg w-max">
-                                <div class="flex flex-col flex-grow rounded-md">
-                                    <input class=" border p-2 rounded-md shadow-inner" type="text" placeholder="✏️ New Task!" value={text} min={"2024-04-12T00:00"} onChange={handleText} />
-                                    <div class="flex flex-row flex-grow mt-2 mb-2 gap-2">
-                                        <div class="flex flex-grow text-sm">
-                                            <div class="flex items-center justify-center p-2 rounded-s-md bg-gradient-to-tr from-slate-300 to-slate-400 text-white text-lg">
+                                <div className="flex flex-col w-full">
+                                    <input className=" border p-2 rounded-md shadow-inner" type="text" placeholder="✏️ New Task!" value={text} min={"2024-04-12T00:00"} onChange={handleText} />
+                                    <div className="flex flex-col xs:flex-row flex-grow mt-2 mb-2 gap-2">
+                                        <div className="flex flex-grow text-sm">
+                                            <div className="flex items-center justify-center p-2 rounded-s-md bg-gradient-to-tr from-slate-300 to-slate-400 text-white text-lg">
                                                 <BiCalendarEvent />
                                             </div>
-                                            <input class=" border p-2 pr-3 rounded-e-md flex-grow shadow-inner" type="datetime-local" min={new Date().toISOString().slice(0, -8)} value={dueDate} onChange={handleDueDate} />
+                                            <input className=" border p-2 pr-3 rounded-e-md flex-grow shadow-inner" type="datetime-local" min={new Date().toISOString().slice(0, -8)} value={dueDate} onChange={handleDueDate} />
                                         </div>
 
-                                        <div class="flex text-sm">
-                                            <div class="flex items-center justify-center p-2 rounded-s-md  bg-gradient-to-tr from-slate-300 to-slate-400  text-white text-lg">
+                                        <div className="flex text-sm">
+                                            <div className="flex items-center justify-center p-2 rounded-s-md  bg-gradient-to-tr from-slate-300 to-slate-400  text-white text-lg">
                                                 <BiSolidErrorCircle />
                                             </div>
-                                            <select defaultValue={priority} onChange={handlePriority} class=" border p-2 rounded-e-md text-sm shadow-inner">
+                                            <select defaultValue={priority} onChange={handlePriority} className=" border p-2 rounded-e-md text-sm shadow-inner w-full">
                                                 <option value="3">High</option>
                                                 <option value="2">Normal</option>
                                                 <option value="1">Low</option>
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="flex flex-grow text-sm">
-                                        <div class="flex items-center rounded-s-md  bg-gradient-to-tr from-slate-300 to-slate-400 text-white text-lg">
-                                            <span class="px-2">
+                                    <div className="flex flex-grow text-sm">
+                                        <div className="flex items-center rounded-s-md  bg-gradient-to-tr from-slate-300 to-slate-400 text-white text-lg">
+                                            <span className="px-2">
                                                 <BiSolidPurchaseTag />
                                             </span>
                                         </div>
-                                        <input class=" border w-full p-2 rounded-e-md shadow-inner" type="text" placeholder="comma separated tags" value={tagsString} onChange={handleTags} />
+                                        <input className=" border w-full p-2 rounded-e-md shadow-inner" type="text" placeholder="comma separated tags" value={tagsString} onChange={handleTags} />
                                     </div>
                                 </div>
-                            </div>
                         }
                     />,
                     document.body
