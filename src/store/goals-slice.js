@@ -1,15 +1,18 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, nanoid } from "@reduxjs/toolkit";
 
 /* 
 Initial state structure would look like below
 goals:[
   {
+    _id: number
     title: string,
     desc: string,
-    targetDate: Date,
+    dueDate: Date,
+    createdAtDate: Date,
     progress: number Derived in redux prepare function,
-    tasks: [
+    checklist: [
       {
+        _id: number
         completed: boolean,
         text: string,
       },
@@ -29,10 +32,13 @@ const goalsSlice = createSlice({
         state.unshift(action.payload);
       },
       prepare: (goal) => {
+        // add id for every checklist item
+        let checklist = goal.checklist.map(item => ({id: nanoid(), ...item}));
         return {
           payload:{
-            ...goal, 
-            id: Math.trunc(Math.random()*100000000)
+            ...goal,
+            id: nanoid(), // id for goal
+            checklist,
           }
         }
       }
