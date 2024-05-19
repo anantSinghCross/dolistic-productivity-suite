@@ -9,7 +9,6 @@ goals:[
     desc: string,
     dueDate: Date,
     createdAtDate: Date,
-    progress: number Derived in redux prepare function,
     checklist: [
       {
         _id: number
@@ -43,6 +42,15 @@ const goalsSlice = createSlice({
         }
       }
     },
+    editGoal: (state, action) => {
+      const editedGoal = action.payload;
+      return state.map(goal => {
+        if(goal.id == editedGoal.id){
+          return editedGoal;
+        }
+        return goal;
+      })
+    },
     deleteGoal: (state, actions) => {
       const id = action.payload;
       return state.filter(item => item.id != id)
@@ -59,6 +67,6 @@ const fetchGoals = createAsyncThunk('goals/fetchGoals', (_, thunkApi) => {
   console.log('Fetching goals-');
 })
 
-const { addGoal, deleteGoal } = goalsSlice.actions;
-export { addGoal, deleteGoal, fetchGoals }
+const { addGoal, deleteGoal, editGoal } = goalsSlice.actions;
+export { addGoal, deleteGoal, editGoal, fetchGoals }
 export default goalsSlice;
