@@ -67,3 +67,26 @@ export function debounced(fn, delay = 250) {
     }, delay);
   };
 }
+
+export function calculateProgress(checklist){
+  if(!checklist || checklist.length === 0) {
+    return {
+      checkedItems: 0,
+      totalItems: 0,
+      progress: 0,
+    }
+  }
+  const checked = checklist.reduce((accum, item) => {
+    if (item.completed) {
+      accum += 1;
+    }
+    return accum;
+  }, 0);
+  const totalItems = checklist.length;
+  const progress = Math.ceil((checked / totalItems) * 100);
+  return {
+    checkedItems: checked,
+    totalItems,
+    progress,
+  }
+} 

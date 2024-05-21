@@ -1,5 +1,7 @@
 import { nanoid } from "@reduxjs/toolkit";
 import ChecklistItem from "./ChecklistItem";
+import ProgressBar from "./ProgressBar";
+import { calculateProgress } from "../../utils";
 
 // TODO: Make the checkboxes toggleable
 
@@ -35,6 +37,17 @@ export default function EditGoal({
       return p.filter(item => item.id != id);
     });
   }
+
+  const handleChecked = (id) => {
+    setChecklist(p => {
+      return p.map(item => {
+        if(item.id == id){
+          return { ...item, completed: !item.completed}
+        }
+        return item;
+      })
+    })
+  }
   
   const checklistItems = checklist.map((item) => {
     return (
@@ -43,9 +56,12 @@ export default function EditGoal({
         completed={item.completed}
         text={item.text}
         handleDelete={() => handleDelete(item.id)}
+        handleChecked={() => handleChecked(item.id)}
       />
     );
   });
+
+  const {progress} = calculateProgress(checklist);
 
   return (
     <div className="flex flex-col rounded-lg w-full items-stretch">
@@ -75,6 +91,7 @@ export default function EditGoal({
           value={dueDate}
           onChange={(e) => setDueDate(e.target.value)}
         />
+        <ProgressBar progress={progress}/>
         <h3 className=" text-gray-500 font-semibold">Checklist</h3>
         <div>{checklistItems}</div>
         {isAddingTask ? (
