@@ -42,7 +42,7 @@ function GoalItem({ goal }) {
     setNewTask("");
   };
 
-  const {checkedItems:checked, totalItems, progress} = calculateProgress(checklist);
+  const { checkedItems, totalItems, progress } = calculateProgress(checklist);
 
   return (
     <>
@@ -51,9 +51,9 @@ function GoalItem({ goal }) {
         className="flex flex-col p-4 m-2 border rounded-2xl shadow-lg shadow-gray-100 border-gray-200 cursor-pointer"
       >
         <ProgressBar progress={progress} />
-        <p>{title}</p>
-        <span className="flex text-gray-400 items-center">
-          <BiCheckSquare size={20} /> {`${checked}/${totalItems}`}
+        <p className=" font-semibold my-2 text-gray-600">{title}</p>
+        <span className="flex gap-1 text-sm font-semibold text-gray-400 items-center rounded-md bg-gradient-to-t from-slate-100 p-1 px-2 w-max">
+          <BiCheckSquare size={18} /> {`${checkedItems}/${totalItems}`}
         </span>
       </div>
       {showModal &&
