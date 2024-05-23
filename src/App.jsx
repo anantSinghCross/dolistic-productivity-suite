@@ -5,6 +5,8 @@ import Header from "./common/Header";
 import NotesManager from "./notesManager/NotesManager";
 import AddNote from "./notesManager/components/AddNote";
 import GoalsTracker from "./goalsTracker/GoalsTracker";
+import Signup from "./auth/Signup";
+import Login from "./auth/Login";
 
 function App() {
   return (
@@ -13,6 +15,8 @@ function App() {
       <Routes>
         <Route path="/" element={<TaskManager />} />
         <Route path="/notes" element={<NotesManager />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/notes/edit" element={<AddNote />} />
         <Route path="/notes/add" element={<AddNote />} />
         <Route path="/goals" element={<GoalsTracker />} />
