@@ -1,4 +1,4 @@
-import { signInWithEmailAndPassword } from 'firebase/auth'
+import { signInWithEmailAndPassword, signOut } from 'firebase/auth'
 import React, { useState } from 'react'
 import { auth } from '../firebase'
 import { useNavigate } from 'react-router'
@@ -13,6 +13,10 @@ function Login() {
       .then((userCreds) => console.log(userCreds))
       .catch((err) => console.log(err))
     }
+  }
+
+  const handleLogout = () => {
+    signOut(auth)
   }
 
   const areValid =(email, password) => {
@@ -33,6 +37,7 @@ function Login() {
         <div className="flex justify-between mt-2">
           <button className="p-2 px-4 hover:underline text-indigo-500" onClick={() => navigate('/signup')}>Sign Up</button>
           <button className="primary-btn" onClick={handleSubmit}>Login</button>
+          <button className="primary-btn" onClick={handleLogout}>Logout</button>
         </div>
       </div>
     </div>
