@@ -1,24 +1,22 @@
-import { signInWithEmailAndPassword, signOut } from 'firebase/auth'
+import { signInWithEmailAndPassword } from 'firebase/auth'
 import React, { useState } from 'react'
 import { auth } from '../firebase'
-import { useNavigate } from 'react-router'
+import { useLocation, useNavigate } from 'react-router'
 
 function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const location = useLocation();
   const handleSubmit = () => {
     if(areValid(email, password)){
       signInWithEmailAndPassword(auth, email, password)
       .then((userCreds) => console.log(userCreds))
+      .then(() => navigate(location.state.from))
       .catch((err) => console.log(err))
     }
   }
-
-  const handleLogout = () => {
-    signOut(auth)
-  }
-
+  
   const areValid =(email, password) => {
     return true;
   }
@@ -37,7 +35,6 @@ function Login() {
         <div className="flex justify-between mt-2">
           <button className="p-2 px-4 hover:underline text-indigo-500" onClick={() => navigate('/signup')}>Sign Up</button>
           <button className="primary-btn" onClick={handleSubmit}>Login</button>
-          <button className="primary-btn" onClick={handleLogout}>Logout</button>
         </div>
       </div>
     </div>

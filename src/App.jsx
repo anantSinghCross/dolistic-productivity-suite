@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import TaskManager from "./taskManager/TaskManager";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import Header from "./common/Header";
 import NotesManager from "./notesManager/NotesManager";
 import AddNote from "./notesManager/components/AddNote";
@@ -15,11 +15,15 @@ import ProtectedRoutes from "./layouts/ProtectedRoutes";
 
 function App() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const isFirstRender = useRef(true);
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if(user) {
         console.log('User logged in');
         dispatch(setUserDetails(user.uid));
+        isFirstRender.current && navigate('/');
+        isFirstRender.current && (isFirstRender.current = false);
       } else {
         console.log('User logged out');
         dispatch(removeAuthDetails());
