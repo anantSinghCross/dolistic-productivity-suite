@@ -1,4 +1,6 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, isRejectedWithValue } from "@reduxjs/toolkit";
+import { collection, getDoc, getDocs, query, where } from "firebase/firestore";
+import { COLLECTION, db } from "../firebase";
 
 const todosSlice = createSlice({
   name: "todos",
@@ -49,16 +51,16 @@ const todosSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchTodos.fulfilled, (state, action) => {
+    builder.addCase(fetchTodosFromDb.fulfilled, (state, action) => {
       state.loading = false;
       state.error = null;
       state.todos = action.payload;
     });
-    builder.addCase(fetchTodos.pending, (state, action) => {
+    builder.addCase(fetchTodosFromDb.pending, (state, action) => {
       state.loading = true;
       state.error = null;
     });
-    builder.addCase(fetchTodos.rejected, (state, action) => {
+    builder.addCase(fetchTodosFromDb.rejected, (state, action) => {
       return { ...state, loading: false, error: action.error };
     });
   },
@@ -80,7 +82,26 @@ const fetchTodos = createAsyncThunk("todos/fetchTodos", async (limit = 5, thunkA
   }
 });
 
+const fetchTodosFromDb = createAsyncThunk("todos/fetchTodosFromDb", async (uid, thunkApi) => {
+  try{
+    const collectionRef = collection(db, COLLECTION.TASKS);
+    const q = query(collectionRef, where('uid', '==', uid));
+    const querySnapshot = await getDocs(q);
+    const todos = [];
+    querySnapshot.forEach(doc => {
+      todos.push({
+        id: doc.id,
+        ...doc.data()
+      })
+    });
+    return todos;
+  } catch(error) {
+    thunkApi.rejectWithValue(error.message);
+    console.error(error.message);
+  }
+})
+
 const { addTodo, deleteTodo, toggleCompleted, editTodo } = todosSlice.actions;
 
-export { addTodo, toggleCompleted, deleteTodo, editTodo, fetchTodos };
+export { addTodo, toggleCompleted, deleteTodo, editTodo, fetchTodos, fetchTodosFromDb };
 export default todosSlice;
