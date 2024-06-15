@@ -1,5 +1,5 @@
-import { createAsyncThunk, createSlice, isRejectedWithValue } from "@reduxjs/toolkit";
-import { collection, getDoc, getDocs, query, where } from "firebase/firestore";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { COLLECTION, db } from "../firebase";
 
 const todosSlice = createSlice({
@@ -10,22 +10,6 @@ const todosSlice = createSlice({
     todos: [],
   },
   reducers: {
-    addTodo: {
-      reducer: (state, action) => {
-        state.todos.unshift(action.payload);
-      },
-      prepare: ({ todo, priority, tags, completeBy }) => {
-        const todoItem = {
-          todo,
-          priority,
-          tags,
-          completeBy,
-          id: Math.trunc(Math.random() * 10000000),
-          completed: false,
-        };
-        return { payload: todoItem };
-      },
-    },
     editTodo: (state, action) => {
       const { id, text, tags, priority, completeBy } = action.payload;
       const updatedTodo = state.todos.find((item) => item.id == id);
@@ -55,31 +39,15 @@ const todosSlice = createSlice({
       state.loading = false;
       state.error = null;
       state.todos = action.payload;
-    });
-    builder.addCase(fetchTodosFromDb.pending, (state, action) => {
+    })
+    .addCase(fetchTodosFromDb.pending, (state, action) => {
       state.loading = true;
       state.error = null;
-    });
-    builder.addCase(fetchTodosFromDb.rejected, (state, action) => {
+    })
+    .addCase(fetchTodosFromDb.rejected, (state, action) => {
       return { ...state, loading: false, error: action.error };
     });
   },
-});
-
-const fetchTodos = createAsyncThunk("todos/fetchTodos", async (limit = 5, thunkApi) => {
-  try {
-    // const todosData = await fetch(`https://dummyjson.com/todos?limit=${limit}`, {signal: thunkApi.signal});
-    // return await todosData.json();
-    const todosRaw = localStorage.getItem("todos");
-    if (todosRaw) {
-      return JSON.parse(todosRaw);
-    } else {
-      return [];
-    }
-  } catch (error) {
-    throw error;
-    // OR return thunkApi.rejectWithValue('Error occured')
-  }
 });
 
 const fetchTodosFromDb = createAsyncThunk("todos/fetchTodosFromDb", async (uid, thunkApi) => {
@@ -101,7 +69,7 @@ const fetchTodosFromDb = createAsyncThunk("todos/fetchTodosFromDb", async (uid, 
   }
 })
 
-const { addTodo, deleteTodo, toggleCompleted, editTodo } = todosSlice.actions;
+const { deleteTodo, toggleCompleted, editTodo } = todosSlice.actions;
 
-export { addTodo, toggleCompleted, deleteTodo, editTodo, fetchTodos, fetchTodosFromDb };
+export { toggleCompleted, deleteTodo, editTodo, fetchTodosFromDb };
 export default todosSlice;

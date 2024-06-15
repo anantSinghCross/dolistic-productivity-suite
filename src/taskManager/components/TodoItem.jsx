@@ -1,12 +1,15 @@
 import { useState } from "react";
-import { deleteTodo, editTodo, toggleCompleted } from "../../store/todos-slice";
-import { useDispatch } from "react-redux";
+import { deleteTodo, editTodo, fetchTodosFromDb, toggleCompleted } from "../../store/todos-slice";
+import { useDispatch, useSelector } from "react-redux";
 import { BsCalendar2EventFill } from "react-icons/bs";
 import { BiTrash, BiPencil, BiSave } from "react-icons/bi";
 import Tag from "./Tag";
 import Priority from "./Priority";
 import DueDate from "./DueDate";
 import { sanitizeTags } from "../../utils";
+import { deleteDoc, doc } from "firebase/firestore";
+import { COLLECTION, db } from "../../firebase";
+import { CgSpinner } from "react-icons/cg";
 
 function TodoItem({
   id,
@@ -17,6 +20,8 @@ function TodoItem({
   completeBy,
 }) {
   const dispatch = useDispatch();
+  const uid = useSelector(s => s.auth);
+  const [pending, setPending] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editText, setEditText] = useState(text);
   const [editPriority, setEditPriority] = useState(priority);
@@ -25,19 +30,35 @@ function TodoItem({
 
   const handleEdit = () => {
     const tags = sanitizeTags(editTags);
-    dispatch(editTodo({ id, text: editText, tags, priority: editPriority, completeBy:editCompleteBy }));
+    dispatch(
+      editTodo({
+        id,
+        text: editText,
+        tags,
+        priority: editPriority,
+        completeBy: editCompleteBy,
+      }),
+    );
     setIsEditing(false);
   };
 
-  const handleDelete = () => {
-    dispatch(deleteTodo(id))
-  }
+  const handleDelete = async () => {
+    try {
+      setPending(true);
+      await deleteDoc(doc(db, COLLECTION.TASKS, id));
+      dispatch(fetchTodosFromDb(uid))
+      setPending(false);
+    } catch (error) {
+      console.error(error);
+    }
+    // dispatch(deleteTodo(id));
+  };
 
   const dateElement = !isEditing ? (
     <DueDate completeBy={completeBy} />
   ) : (
     <input
-      className=" p-2 rounded text-sm border"
+      className="rounded border p-2 text-sm"
       type="datetime-local"
       min={new Date().toISOString().slice(0, -8)}
       value={editCompleteBy}
@@ -51,7 +72,7 @@ function TodoItem({
     <select
       defaultValue={editPriority}
       onChange={(e) => setEditPriority(parseInt(e.target.value))}
-      className=" p-2 rounded border text-xs"
+      className="rounded border p-2 text-xs"
     >
       <option value="3">High</option>
       <option value="2">Normal</option>
@@ -63,7 +84,7 @@ function TodoItem({
     tags.map((tag) => <Tag key={tag} name={tag} />)
   ) : (
     <input
-      className=" w-full p-1 border rounded text-xs"
+      className="w-full rounded border p-1 text-xs"
       type="text"
       value={editTags}
       onChange={(e) => setEditTags(e.target.value)}
@@ -72,12 +93,12 @@ function TodoItem({
 
   const note = isEditing ? (
     <textarea
-      className=" mb-4 mt-4 min-h-12 h-fit w-full text-sm rounded border"
+      className="mb-4 mt-4 h-fit min-h-12 w-full rounded border text-sm"
       value={editText}
       onChange={(e) => setEditText(e.target.value)}
     />
   ) : (
-    <p className="mb-4 mt-4 text font-normal text-gray-700">{text}</p>
+    <p className="text mb-4 mt-4 font-normal text-gray-700">{text}</p>
   );
 
   return (
@@ -90,14 +111,14 @@ function TodoItem({
           checked={completed}
           onChange={() => dispatch(toggleCompleted(id))}
         />
-        <div className="flex flex-grow items-center border rounded-2xl shadow-lg shadow-gray-100 border-gray-200 bg-white p-4">
+        <div className="flex flex-grow items-center rounded-2xl border border-gray-200 bg-white p-4 shadow-lg shadow-gray-100">
           <div className="flex-grow">
-            <div className="mb-1 flex flex-col xs:flex-row items-center justify-between">
+            <div className="mb-1 flex flex-col items-center justify-between xs:flex-row">
               {priorityElement}
               {dateElement}
             </div>
             {note}
-            <div className="flex space-x-2 flex-wrap">{tagsList}</div>
+            <div className="flex flex-wrap space-x-2">{tagsList}</div>
           </div>
         </div>
         <div className="ml-4 flex flex-col items-center gap-1 self-start">
@@ -112,16 +133,21 @@ function TodoItem({
             }}
           >
             {isEditing ? (
-              <BiSave className="w-5 h-5" />
+              <BiSave className="h-5 w-5" />
             ) : (
-              <BiPencil className="w-5 h-5" />
+              <BiPencil className="h-5 w-5" />
             )}
           </button>
           <button
             className="w-max rounded-md p-2 text-slate-500 hover:bg-slate-100"
             onClick={handleDelete}
-          >
-            <BiTrash className="w-5 h-5" />
+          >{
+            pending ? (
+              <CgSpinner className=" h-5 w-5 animate-spin"/>
+            ) : (
+              <BiTrash className="h-5 w-5" />
+            )
+          }
           </button>
         </div>
       </div>

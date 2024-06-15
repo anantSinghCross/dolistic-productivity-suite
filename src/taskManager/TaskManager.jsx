@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { fetchTodos, fetchTodosFromDb } from "../store/todos-slice";
+import { fetchTodosFromDb } from "../store/todos-slice";
 import { useDispatch, useSelector } from "react-redux";
 import TodoItem from "./components/TodoItem";
 import AddTodo from "./components/AddTodo";
@@ -8,7 +8,7 @@ import { filterArray, getUniqueTags, sortSelector } from "../utils";
 import Accordian from "./components/Accordian";
 import SearchBar from "./components/SearchBar";
 
-// TODO: Fetch for tasks added, Now pending Addition, Deletion, Updation
+// TODO: Pending -> Addition, Updation
 
 function TaskManager() {
   const dispatch = useDispatch();

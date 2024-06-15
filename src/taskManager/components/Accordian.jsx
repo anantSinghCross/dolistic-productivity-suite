@@ -17,10 +17,10 @@ function Accordian({ children, title }) {
   };
 
   return (
-    <div className=" m-2 border-2 rounded-lg">
+    <div className=" m-2 rounded-lg">
       <div
         onClick={handleClick}
-        className="flex justify-between border-b items-center p-2 px-3 text-md"
+        className="flex justify-between items-center p-2 px-3 text-md cursor-pointer"
       >
         <p className="font-medium">{title}</p>
         {!show ? <BiChevronDown /> : <BiChevronUp />}
