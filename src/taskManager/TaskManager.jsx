@@ -8,8 +8,6 @@ import { filterArray, getUniqueTags, sortSelector } from "../utils";
 import Accordian from "./components/Accordian";
 import SearchBar from "./components/SearchBar";
 
-// TODO: Pending -> Addition, Updation
-
 function TaskManager() {
   const dispatch = useDispatch();
   const todos = useSelector((state) => state.todos.todos);
@@ -70,7 +68,7 @@ function TaskManager() {
           </Accordian>
         </>
       ) : null}
-      {!loading ? todoList : <h4 className="p-4 text-center">Loading... ⏳</h4>}
+      {todoList}
     </>
   );
 }

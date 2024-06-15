@@ -1,5 +1,9 @@
 import { useState } from "react";
-import { deleteTodo, editTodo, fetchTodosFromDb, toggleCompleted } from "../../store/todos-slice";
+import {
+  editTodo,
+  fetchTodosFromDb,
+  toggleCompleted,
+} from "../../store/todos-slice";
 import { useDispatch, useSelector } from "react-redux";
 import { BsCalendar2EventFill } from "react-icons/bs";
 import { BiTrash, BiPencil, BiSave } from "react-icons/bi";
@@ -7,7 +11,7 @@ import Tag from "./Tag";
 import Priority from "./Priority";
 import DueDate from "./DueDate";
 import { sanitizeTags } from "../../utils";
-import { deleteDoc, doc } from "firebase/firestore";
+import { deleteDoc, doc, setDoc } from "firebase/firestore";
 import { COLLECTION, db } from "../../firebase";
 import { CgSpinner } from "react-icons/cg";
 
@@ -20,38 +24,67 @@ function TodoItem({
   completeBy,
 }) {
   const dispatch = useDispatch();
-  const uid = useSelector(s => s.auth);
-  const [pending, setPending] = useState(false);
+  const uid = useSelector((s) => s.auth);
+  const [togglePending, setTogglePending] = useState(false);
+  const [deletionPending, setDeletionPending] = useState(false);
+  const [editPending, setEditPending] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editText, setEditText] = useState(text);
   const [editPriority, setEditPriority] = useState(priority);
   const [editTags, setEditTags] = useState(tags.join(", "));
   const [editCompleteBy, setEditCompleteBy] = useState(completeBy);
 
-  const handleEdit = () => {
+  const handleEdit = async () => {
     const tags = sanitizeTags(editTags);
-    dispatch(
-      editTodo({
-        id,
-        text: editText,
-        tags,
-        priority: editPriority,
-        completeBy: editCompleteBy,
-      }),
-    );
-    setIsEditing(false);
+    try {
+      setEditPending(true);
+      await setDoc(
+        doc(db, COLLECTION.TASKS, id),
+        {
+          text: editText,
+          tags,
+          priority: editPriority,
+          completeBy: editCompleteBy,
+        },
+        { merge: true },
+      );
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsEditing(false);
+      setEditPending(false);
+      dispatch(fetchTodosFromDb(uid));
+    }
   };
 
   const handleDelete = async () => {
     try {
-      setPending(true);
+      setDeletionPending(true);
       await deleteDoc(doc(db, COLLECTION.TASKS, id));
-      dispatch(fetchTodosFromDb(uid))
-      setPending(false);
+      setDeletionPending(false);
+      dispatch(fetchTodosFromDb(uid));
     } catch (error) {
       console.error(error);
     }
     // dispatch(deleteTodo(id));
+  };
+
+  const handleCompleted = async () => {
+    try {
+      setTogglePending(true);
+      await setDoc(
+        doc(db, COLLECTION.TASKS, id),
+        {
+          completed: !completed,
+        },
+        { merge: true },
+      );
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setTogglePending(false);
+      dispatch(fetchTodosFromDb(uid));
+    }
   };
 
   const dateElement = !isEditing ? (
@@ -104,13 +137,18 @@ function TodoItem({
   return (
     <>
       <div className="flex px-2 py-1">
-        <input
-          className="mr-4 mt-4 h-5 w-5 flex-shrink-0 self-start text-indigo-500"
-          type="checkbox"
-          id={id}
-          checked={completed}
-          onChange={() => dispatch(toggleCompleted(id))}
-        />
+        <div className="flex flex-col items-center">
+          <input
+            className=" m-3 h-5 w-5 flex-shrink-0 self-start text-indigo-500"
+            type="checkbox"
+            id={id}
+            checked={completed}
+            onChange={handleCompleted}
+          />
+          {
+            togglePending && <span className=" text-indigo-500"><CgSpinner className=" h-6 w-6 animate-spin" /></span>
+          }
+        </div>
         <div className="flex flex-grow items-center rounded-2xl border border-gray-200 bg-white p-4 shadow-lg shadow-gray-100">
           <div className="flex-grow">
             <div className="mb-1 flex flex-col items-center justify-between xs:flex-row">
@@ -133,7 +171,11 @@ function TodoItem({
             }}
           >
             {isEditing ? (
-              <BiSave className="h-5 w-5" />
+              editPending ? (
+                <CgSpinner className="h-5 w-5 animate-spin" />
+              ) : (
+                <BiSave className="h-5 w-5" />
+              )
             ) : (
               <BiPencil className="h-5 w-5" />
             )}
@@ -141,13 +183,12 @@ function TodoItem({
           <button
             className="w-max rounded-md p-2 text-slate-500 hover:bg-slate-100"
             onClick={handleDelete}
-          >{
-            pending ? (
-              <CgSpinner className=" h-5 w-5 animate-spin"/>
+          >
+            {deletionPending ? (
+              <CgSpinner className="h-5 w-5 animate-spin" />
             ) : (
               <BiTrash className="h-5 w-5" />
-            )
-          }
+            )}
           </button>
         </div>
       </div>

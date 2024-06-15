@@ -1,5 +1,5 @@
 import { createListenerMiddleware, isAnyOf } from "@reduxjs/toolkit";
-import { addTodo, deleteTodo, toggleCompleted, editTodo } from "../todos-slice";
+import { toggleCompleted, editTodo } from "../todos-slice";
 import { save } from "../draftNote-slice";
 import { debounced } from "../../utils";
 import { addNote, deleteNote } from "../notes-slice";
@@ -7,7 +7,7 @@ import { addNote, deleteNote } from "../notes-slice";
 // only saving the todos list state not the auth state
 export const writeTodosToLocalStorage = createListenerMiddleware();
 writeTodosToLocalStorage.startListening({
-  matcher: isAnyOf(addTodo, deleteTodo, toggleCompleted, editTodo),
+  matcher: isAnyOf(toggleCompleted, editTodo),
   effect: async (action, listenerApi) => {
     const todos = listenerApi.getState()?.todos?.todos;
     if (todos) {

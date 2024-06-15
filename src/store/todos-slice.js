@@ -28,11 +28,7 @@ const todosSlice = createSlice({
         return todo;
       });
       return { ...state, todos: updatedTodos };
-    },
-    deleteTodo: (state, action) => {
-      const updatedTodos = state.todos.filter((todo) => todo.id != action.payload);
-      return { ...state, todos: updatedTodos };
-    },
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(fetchTodosFromDb.fulfilled, (state, action) => {
@@ -69,7 +65,7 @@ const fetchTodosFromDb = createAsyncThunk("todos/fetchTodosFromDb", async (uid, 
   }
 })
 
-const { deleteTodo, toggleCompleted, editTodo } = todosSlice.actions;
+const { toggleCompleted, editTodo } = todosSlice.actions;
 
-export { toggleCompleted, deleteTodo, editTodo, fetchTodosFromDb };
+export { toggleCompleted, editTodo, fetchTodosFromDb };
 export default todosSlice;
