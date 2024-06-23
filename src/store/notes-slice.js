@@ -1,5 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { sanitizeTags } from "../utils";
+import { collection, doc, getDocs, query, where } from "firebase/firestore";
+import { COLLECTION, db } from "../firebase";
 
 const notesSlice = createSlice({
   name: "notes",
@@ -30,17 +32,26 @@ const notesSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchNotes.fulfilled, (state, action) => {
+    builder.addCase(fetchNotesFromDb.fulfilled, (state, action) => {
       return action.payload;
     })
   }
 });
 
-const fetchNotes = createAsyncThunk("notes/fetchNotes", async (_, thunkApi) => {
-  const notesString = localStorage.getItem("notes");
-  return notesString ? JSON.parse(notesString) : [];
+const fetchNotesFromDb = createAsyncThunk("notes/fetchNotesFromDb", async (uid, thunkApi) => {
+  const q = query(collection(db, COLLECTION.NOTES), where('uid', '==', uid));
+  const querySnapshot = await getDocs(q);
+  const notes = [];
+  querySnapshot.forEach((doc) => {
+    notes.push({
+      id: doc.id,
+      ...doc.data()
+    });
+  })
+  return notes;
+  // return notesString ? JSON.parse(notesString) : [];
 });
 
 export default notesSlice;
 const { addNote, deleteNote } = notesSlice.actions;
-export { addNote, deleteNote, fetchNotes }
+export { addNote, deleteNote, fetchNotesFromDb }

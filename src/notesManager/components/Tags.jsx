@@ -6,15 +6,15 @@ function Tags({
   toggleTagFilter,
 }) {
   const tagsList = tags.map((tag) => (
-    <button
+    <span
       key={tag}
       onClick={() => toggleTagFilter(tag)}
-      className={`px-3 rounded-md  ${
-        tagFilter.includes(tag) ? "bg-indigo-500 text-white shadow-inner" : "bg-slate-100"
+      className={`p-2 px-3 rounded-md self-center  ${
+        tagFilter.includes(tag) ? "bg-indigo-500 text-white shadow-inner " : "bg-slate-100"
       } `}
     >
       {`${tag[0].toUpperCase()}${tag.slice(1)}`}
-    </button>
+    </span>
   ));
 
   const handleAllFilterToggle = () => {
@@ -32,13 +32,13 @@ function Tags({
   };
 
   return (
-    <div className="flex gap-1 text-xs">
-      <button
-        className=" px-4 rounded-md bg-indigo-100 text-indigo-700"
+    <div className="flex gap-1 text-xs flex-wrap">
+      <span
+        className=" p-2 px-4 rounded-md self-center bg-indigo-100 text-indigo-700"
         onClick={handleAllFilterToggle}
       >
         All
-      </button>
+      </span>
       {tagsList}
     </div>
   );

@@ -2,21 +2,18 @@ import "draft-js/dist/Draft.css";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { fetchNotes } from "../store/notes-slice";
+import { fetchNotesFromDb } from "../store/notes-slice";
 import NoteItem from "./components/NoteItem";
 import { getUniqueTags } from "../utils";
 import Tags from "./components/Tags";
 import SearchBar from "../taskManager/components/SearchBar";
 import { convertFromRaw } from "draft-js";
-
-// TODO:
-// 1. Deploy the site on GCP Cloud Run (research about all free tiers in GCP)
-// 2. Develop Goal Tracker
-// 3. Develop backend with Node.js and MongoDB OR Node.js and FireStore OR just FireStore 
-//    (research what is best compatible with GCP Cloud Run)
  
+// TODO: ✅C ✅R 🔳U 🔳D
+
 function NotesManager() {
   const dispatch = useDispatch();
+  const uid = useSelector(s => s.auth);
   const notes = useSelector((state) => state.notes);
   const [tags, setTags] = useState([]);
   const [tagFilter, setTagFilter] = useState([]); // Will have selected filters in an array
@@ -32,6 +29,7 @@ function NotesManager() {
       return Array.from(s);
     });
   };
+
   const notesList =
     notes && notes.length > 0
       ? notes
@@ -45,7 +43,7 @@ function NotesManager() {
       : null;
 
   useEffect(() => {
-    dispatch(fetchNotes());
+    dispatch(fetchNotesFromDb(uid));
   }, []);
 
   useEffect(() => {
@@ -61,7 +59,7 @@ function NotesManager() {
           <div className="flex justify-between mt-2">
             <Tags tags={tags} tagFilter={tagFilter} toggleTagFilter={toggleTagFilter} />
             <Link to="/notes/add">
-              <button className="primary-grad-btn">
+              <button className="primary-grad-btn text-nowrap">
                 Add Note
               </button>
             </Link>

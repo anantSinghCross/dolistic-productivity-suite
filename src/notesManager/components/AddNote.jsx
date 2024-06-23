@@ -16,12 +16,15 @@ import { addNote } from "../../store/notes-slice";
 import { sanitizeTags } from "../../utils";
 import { blockRenderMap } from "../blockWrappers/blockRenderMap";
 import ControlButton from "./ControlButton";
+import { addDoc, collection } from "firebase/firestore";
+import { COLLECTION, db } from "../../firebase";
 
 // if location is present then take everything from location state other wise from drafts
 function AddNote() {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
+  const uid = useSelector(s => s.auth);
   const draftNote = useSelector((state) => state.draftNote);
   const [editorState, setEditorState] = useState(() => {
     return location.state
@@ -87,16 +90,31 @@ function AddNote() {
   const handleTitleChange = (e) => setTitle(e.target.value);
   const handleTagsChange = (e) => setTagsStr(e.target.value);
 
-  const handleSaveNote = () => {
+  const handleSaveNote = async () => {
     if (!location.state) {
       // means it's a new note
-      dispatch(
-        addNote({
-          title,
-          tags: sanitizeTags(tagsStr),
-          content: convertToRaw(editorState.getCurrentContent()),
-        })
-      );
+      try {
+        const notesCollection = collection(db, COLLECTION.NOTES);
+        const docRef = await addDoc(notesCollection,
+          {
+            title,
+            tags: sanitizeTags(tagsStr),
+            content: convertToRaw(editorState.getCurrentContent()),
+            createdAt: new Date().toISOString().slice(0, -8),
+            updatedAt: new Date().toISOString().slice(0, -8),
+            uid
+          }
+        )
+      } catch (error) {
+        console.error(error);
+      }
+      // dispatch(
+      //   addNote({
+      //     title,
+      //     tags: sanitizeTags(tagsStr),
+      //     content: convertToRaw(editorState.getCurrentContent()),
+      //   })
+      // );
     } else {
       // means it's being edited, directly save it to localStorage
       let editedNote = {
