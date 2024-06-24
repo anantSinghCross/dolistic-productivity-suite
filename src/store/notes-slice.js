@@ -26,10 +26,6 @@ const notesSlice = createSlice({
         };
       },
     },
-    deleteNote: (state, action) => {
-      const id = action.payload;
-      return state.filter((note) => note.id !== id);
-    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchNotesFromDb.fulfilled, (state, action) => {
@@ -53,5 +49,5 @@ const fetchNotesFromDb = createAsyncThunk("notes/fetchNotesFromDb", async (uid, 
 });
 
 export default notesSlice;
-const { addNote, deleteNote } = notesSlice.actions;
-export { addNote, deleteNote, fetchNotesFromDb }
+const { addNote} = notesSlice.actions;
+export { addNote, fetchNotesFromDb }

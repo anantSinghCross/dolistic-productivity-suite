@@ -18,12 +18,14 @@ import { blockRenderMap } from "../blockWrappers/blockRenderMap";
 import ControlButton from "./ControlButton";
 import { addDoc, collection } from "firebase/firestore";
 import { COLLECTION, db } from "../../firebase";
+import { CgSpinner } from "react-icons/cg";
 
 // if location is present then take everything from location state other wise from drafts
 function AddNote() {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
+  const [pending, setPending] = useState(false);
   const uid = useSelector(s => s.auth);
   const draftNote = useSelector((state) => state.draftNote);
   const [editorState, setEditorState] = useState(() => {
@@ -93,9 +95,10 @@ function AddNote() {
   const handleSaveNote = async () => {
     if (!location.state) {
       // means it's a new note
+      setPending(true);
       try {
         const notesCollection = collection(db, COLLECTION.NOTES);
-        const docRef = await addDoc(notesCollection,
+        await addDoc(notesCollection,
           {
             title,
             tags: sanitizeTags(tagsStr),
@@ -107,14 +110,11 @@ function AddNote() {
         )
       } catch (error) {
         console.error(error);
+      } finally {
+        setPending(false);
       }
-      // dispatch(
-      //   addNote({
-      //     title,
-      //     tags: sanitizeTags(tagsStr),
-      //     content: convertToRaw(editorState.getCurrentContent()),
-      //   })
-      // );
+      navigate('/notes');
+
     } else {
       // means it's being edited, directly save it to localStorage
       let editedNote = {
@@ -177,12 +177,23 @@ function AddNote() {
         value={tagsStr}
         onChange={handleTagsChange}
       />
-      <button
-        className="primary-grad-btn w-full sm:w-max"
-        onClick={handleSaveNote}
-      >
-        Save
-      </button>
+      {
+        pending ? (
+          <button
+            className="primary-grad-btn w-full sm:w-max"
+            onClick={handleSaveNote}
+          >
+            <span className="flex gap-2 items-center"><CgSpinner className="animate-spin" size={17}/>Saving</span>
+          </button>
+        ) : (
+          <button
+            className="primary-grad-btn w-full sm:w-max"
+            onClick={handleSaveNote}
+          >
+            Save
+          </button>
+        )
+      }
     </div>
   );
 }
