@@ -12,11 +12,10 @@ import { BiBold, BiCodeAlt, BiItalic, BiSolidQuoteAltRight, BiUnderline } from "
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { fetchDraftNote, save } from "../../store/draftNote-slice";
-import { addNote } from "../../store/notes-slice";
 import { sanitizeTags } from "../../utils";
 import { blockRenderMap } from "../blockWrappers/blockRenderMap";
 import ControlButton from "./ControlButton";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 import { COLLECTION, db } from "../../firebase";
 import { CgSpinner } from "react-icons/cg";
 
@@ -118,18 +117,20 @@ function AddNote() {
     } else {
       // means it's being edited, directly save it to localStorage
       let editedNote = {
-        id: location.state.noteId,
         title,
         tags: sanitizeTags(tagsStr),
         content: convertToRaw(editorState.getCurrentContent()),
         createdAt: location.state.createdAt,
         updatedAt: location.state.updatedAt,
-      };
-      let allNotes = JSON.parse(localStorage.getItem('notes'));
-      let updatedNotes = allNotes.map(note => {
-        if(note.id == location.state.noteId){ return editedNote; } return note;
-      });
-      localStorage.setItem('notes', JSON.stringify(updatedNotes));
+      }
+      try {
+        setPending(true);
+        await setDoc(doc(db, COLLECTION.NOTES, location.state.noteId), editedNote, {merge: true});
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setPending(false);
+      }
       navigate('/notes');
     }
     setTitle("");
