@@ -1,4 +1,6 @@
 import { createAsyncThunk, createSlice, nanoid } from "@reduxjs/toolkit";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { COLLECTION, db } from "../firebase";
 
 /* 
 Initial state structure would look like below
@@ -58,13 +60,30 @@ const goalsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(fetchGoals.fulfilled, (state, action) => {
-      console.log('Fetch successful!')
+      return action.payload;
+    })
+    builder.addCase(fetchGoals.rejected, (state, action) => {
+      console.log(action)
     })
   }
 });
 
-const fetchGoals = createAsyncThunk('goals/fetchGoals', (_, thunkApi) => {
-  console.log('Fetching goals-');
+const fetchGoals = createAsyncThunk('goals/fetchGoals', async (uid, thunkApi) => {
+  const goalsCollection = collection(db, COLLECTION.GOALS);
+  const q = query(goalsCollection, where('uid', '==', uid));
+  let goals = [];
+  try {
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach(doc => {
+      goals.push({
+        ...doc.data(),
+        id: doc.id
+      })
+    })
+  } catch (error) {
+    console.error(error);
+  }
+  return goals;
 })
 
 const { addGoal, deleteGoal, editGoal } = goalsSlice.actions;

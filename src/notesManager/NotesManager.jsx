@@ -8,8 +8,6 @@ import { getUniqueTags } from "../utils";
 import Tags from "./components/Tags";
 import SearchBar from "../taskManager/components/SearchBar";
 import { convertFromRaw } from "draft-js";
- 
-// TODO: ✅C ✅R 🔳U ✅D
 
 function NotesManager() {
   const dispatch = useDispatch();
