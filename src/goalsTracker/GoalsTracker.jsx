@@ -4,7 +4,7 @@ import GoalItem from './components/GoalItem'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchGoals } from '../store/goals-slice';
 
-// Todo: 🔳C ✅R 🔳U 🔳D
+// Todo: ✅C ✅R ✅U 🔳D
 
 function GoalsTracker() {
   const dispatch = useDispatch();

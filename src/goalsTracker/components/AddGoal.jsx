@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import Modal from "../../common/Modal";
 import { createPortal } from "react-dom";
-import { useDispatch } from "react-redux";
-import { addGoal } from "../../store/goals-slice";
+import { useDispatch, useSelector } from "react-redux";
+import { addGoal, fetchGoals } from "../../store/goals-slice";
 import EditGoal from "./EditGoal";
+import { addDoc, collection } from "firebase/firestore";
+import { COLLECTION, db } from "../../firebase";
 
 function AddGoal() {
   const dispatch = useDispatch();
+  const uid = useSelector(s => s.auth);
+  const [pendingAddition, setPendingAddition] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [title, setTitle] = useState('');
   const [desc, setDesc] = useState('');
@@ -15,16 +19,26 @@ function AddGoal() {
   const [isAddingTask, setIsAddingTask] = useState(false);
   const [newTask, setNewTask] = useState('');
 
-  const handleSaveGoal = () => {
-    dispatch(addGoal({ 
-      title,
-      desc, 
-      dueDate,
-      createdAtDate: new Date().toISOString().slice(0, -8),
-      checklist
-    }));
-    resetFields();
-    setShowModal(false);
+  const handleSaveGoal = async () => {
+    const goalsCollection = collection(db, COLLECTION.GOALS);
+    try {
+      setPendingAddition(true);
+      await addDoc(goalsCollection, {
+        title,
+        desc, 
+        dueDate,
+        createdAtDate: new Date().toISOString().slice(0, -8),
+        checklist,
+        uid
+      })
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setPendingAddition(false);
+      resetFields();
+      setShowModal(false);
+      dispatch(fetchGoals(uid));
+    }
   }
 
   const resetFields = () => {
