@@ -30,6 +30,7 @@ export default function EditGoal({
       return [...p, newChecklistItem];
     });
     setIsAddingTask(false);
+    setNewTask('')
   }
 
   const handleDelete = (id) => {
