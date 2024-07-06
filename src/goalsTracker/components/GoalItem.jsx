@@ -3,14 +3,22 @@ import { createPortal } from "react-dom";
 import { BiCheckSquare } from "react-icons/bi";
 import Modal from "../../common/Modal";
 import EditGoal from "./EditGoal";
-import { useDispatch } from "react-redux";
-import { editGoal } from "../../store/goals-slice";
+import { useDispatch, useSelector } from "react-redux";
+import { editGoal, fetchGoals } from "../../store/goals-slice";
 import ProgressBar from "./ProgressBar";
 import { calculateProgress } from "../../utils";
+import { deleteDoc, doc, setDoc } from "firebase/firestore";
+import { COLLECTION, db } from "../../firebase";
+import { BiTrash } from 'react-icons/bi'
+import { CgSpinner } from "react-icons/cg";
+
 
 function GoalItem({ goal }) {
   const { title, desc, dueDate, createdAtDate, checklist } = goal;
+  const uid = useSelector(s => s.auth);
   const dispatch = useDispatch();
+  const [pendingEdit, setPendingEdit] = useState(false);
+  const [pendingDeletion, setPendingDeletion] = useState(false);
   const [editTitle, setEditTitle] = useState(title);
   const [editDesc, setEditDesc] = useState(desc);
   const [editDueDate, setEditDueDate] = useState(dueDate);
@@ -19,20 +27,38 @@ function GoalItem({ goal }) {
   const [newTask, setNewTask] = useState("");
   const [showModal, setShowModal] = useState(false);
 
-  const handleEditGoal = () => {
-    dispatch(
-      editGoal({
-        id: goal.id,
+  const handleEditGoal = async () => {
+    try {
+      setPendingEdit(true);
+      await setDoc(doc(db, COLLECTION.GOALS, goal.id), {
         title: editTitle,
         desc: editDesc,
         dueDate: editDueDate,
         createdAtDate: goal.createdAtDate,
         checklist: editChecklist,
-      })
-    );
-    resetFields();
-    setShowModal(false);
+      }, {merge: true});
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setPendingEdit(false);
+      resetFields();
+      setShowModal(false);
+      dispatch(fetchGoals(uid));
+    } 
   };
+
+  const handleDeletion = async (e) => {
+    e.stopPropagation()
+    try {
+      setPendingDeletion(true);
+      await deleteDoc(doc(db, COLLECTION.GOALS, goal.id));
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setPendingDeletion(false)
+      dispatch(fetchGoals(uid));
+    }
+  }
 
   const resetFields = () => {
     setEditTitle(editTitle);
@@ -48,17 +74,33 @@ function GoalItem({ goal }) {
     <>
       <div
         onClick={() => setShowModal(true)}
-        className="flex flex-col p-4 m-2 border rounded-2xl shadow-lg shadow-gray-100 border-gray-200 cursor-pointer"
+        className="group flex flex-col p-4 m-2 border rounded-2xl shadow-lg shadow-gray-100 border-gray-200 cursor-pointer"
       >
         <ProgressBar progress={progress} />
         <p className=" font-semibold my-2 text-gray-600">{title}</p>
-        <span className="flex gap-1 text-sm font-semibold text-gray-400 items-center rounded-md bg-gradient-to-t from-slate-100 p-1 px-2 w-max">
-          <BiCheckSquare size={18} /> {`${checkedItems}/${totalItems}`}
-        </span>
+        <div className="flex justify-between">
+          <span className="flex gap-1 text-sm font-semibold text-gray-400 items-center rounded-md bg-gradient-to-t from-slate-100 p-1 px-2 w-max">
+            <BiCheckSquare size={18} /> {`${checkedItems}/${totalItems}`}
+          </span>
+          <button 
+            className='group-hover:visible invisible p-2 text-gray-400 bg-white border rounded shadow'
+            onClick={handleDeletion}
+          >
+            {
+              pendingDeletion ? (
+                <CgSpinner className=" animate-spin" size={17}/>
+              ) : (
+                <BiTrash/>
+              )
+            }
+          </button>
+        </div>
       </div>
       {showModal &&
         createPortal(
           <Modal
+            loading={pendingEdit}
+            loadingText="Saving"
             onCancel={() => setShowModal(false)}
             onConfirm={handleEditGoal}
             confirmBtnText="Save Goal"

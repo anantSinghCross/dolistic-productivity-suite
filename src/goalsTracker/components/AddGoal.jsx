@@ -57,6 +57,8 @@ function AddGoal() {
       {showModal &&
         createPortal(
           <Modal
+            loading={pendingAddition}
+            loadingText="Saving"
             onCancel={() => setShowModal(false)}
             onConfirm={handleSaveGoal}
             confirmBtnText="Save Goal"

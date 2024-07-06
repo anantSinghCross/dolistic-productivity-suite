@@ -51,7 +51,7 @@ function Header() {
           )
         }
       </nav>
-      <menu className="flex gap-2 sm:hidden justify-center items-center rounded-lg bg-gray-100 mx-4 text-sm">
+      <menu className="flex gap-2 pt-1 sm:hidden justify-center items-center rounded-lg bg-gray-100 mx-4 text-sm">
         <NavLink
           to="/"
           className={activeClass}
